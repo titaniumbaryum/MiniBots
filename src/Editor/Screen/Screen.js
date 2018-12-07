@@ -65,11 +65,13 @@ class Screen extends Component {
       if(tool.holding.type == "output"){
         const col = this.__findCollisions(e.point,false,true,false);
         if(col.nodes.length && col.nodes[0].canConnect && tool.holding.node!=col.nodes[0]){
-          this.state.mesh.links[""+Math.round(Math.random()*1000000)] = new Link(tool.holding.node,tool.holding.output,col.nodes[0],{
+          const link = new Link(tool.holding.node,tool.holding.output,col.nodes[0],{
             editor:{
               color:colorCycler.get()
             }
           });
+          link.pause();
+          this.state.mesh.links[""+Math.round(Math.random()*1000000)] = link;
           this.forceUpdate();
         }
       }

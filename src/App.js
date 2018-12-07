@@ -35,10 +35,11 @@ class App extends Component {
     this.setField = this.setField.bind(this);
     this.setScreen = this.setScreen.bind(this);
     this.play = this.play.bind(this);
+    this.closePlayField = this.closePlayField.bind(this);
   }
   render() {
     if(this.state.screen=="editor") return <Editor mesh={this.state.mesh} onPlay={this.play}/>;
-    else if(this.state.screen=="tester")return <Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={()=>this.setScreen("editor")}/>;
+    else if(this.state.screen=="tester")return <Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closePlayField}/>;
   }
   componentDidMount(){
     this.setField(testData);
@@ -55,6 +56,10 @@ class App extends Component {
     this.state.mesh.reset();
     this.state.mesh.unpause();
     this.state.robot.reset();
+  }
+  closePlayField(){
+    this.setScreen("editor")
+    this.state.mesh.pause();
   }
 }
 

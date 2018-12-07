@@ -12,10 +12,6 @@ class Editor extends Component {
       mesh:this.props.mesh,
       selectedNode:null,
     };
-    setInterval(()=>{
-      if(this.state.paused)this.state.mesh.pause();
-      else this.state.mesh.unpause();
-    },50);
     this.save = this.save.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.refresh = this.refresh.bind(this);
