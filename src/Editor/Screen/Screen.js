@@ -52,6 +52,7 @@ class Screen extends Component {
       }
     });
     tool.on("drag",e=>{
+      if(!tool.holding)return;
       if(tool.holding.type == "node"){
         tool.holding.node.setPosition(...tool.holding.node.getPosition().plus(e.delta));
         this.forceUpdate();
@@ -60,9 +61,10 @@ class Screen extends Component {
       }
     });
     tool.on("up",e=>{
+      if(!tool.holding)return;
       if(tool.holding.type == "output"){
         const col = this.__findCollisions(e.point,false,true,false);
-        if(col.nodes.length && col.nodes[0].canConnect){
+        if(col.nodes.length && col.nodes[0].canConnect && tool.holding.node!=col.nodes[0]){
           this.state.mesh.links[""+Math.round(Math.random()*1000000)] = new Link(tool.holding.node,tool.holding.output,col.nodes[0],{
             editor:{
               color:colorCycler.get()
