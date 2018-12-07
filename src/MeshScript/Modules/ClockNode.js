@@ -5,15 +5,18 @@ export class ClockNode extends Node{
     this.editor.parameters = [
       {type:"float",key:"period",name:"Clock period (ms)"}
     ];
-    this.outputs["output"]=[];
+    this.outputs[" "]=[];
     this.options.period=typeof this.options.period !== "undefined"?this.options.period:1000;
-    var outputs=this.outputs;
-    var clock=setInterval(function(){
-      for(var i=0;i<outputs["output"].length;i++){
-        outputs["output"][i].link.trigger({});
+    this.update();
+    this.canConnect = false;
+  }
+  update(){
+    clearInterval(this.clock);
+    this.clock=setInterval(()=>{
+      for(const output of this.outputs[" "]){
+        output.link.trigger({});
       }
     },this.options.period);
-    this.canConnect = false;
   }
   __renderMainBody(ctx){
     ctx.beginPath();
