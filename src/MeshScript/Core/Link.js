@@ -89,6 +89,9 @@ export class Link{
     }
     this.p=false;
   }
+  reset(){
+    this.s = false;
+  }
   toJSONable(mesh){
     const o = {};
     for(const i of Object.keys(this.options)){

@@ -18,8 +18,14 @@ export class DephaserNode extends Node{
     ctx.stroke();
   }
   code(p,o){
-    setTimeout(function(){
+    const t = setTimeout(function(){
+      this.timers.splice(this.timers.indexOf(t), 1);
       o("output",p);
     },this.options.period);
+    this.timers.push(t);
+  }
+  reset(){
+    for(const t of this.timers)clearTimeout(this.t);
+    this.timers=[];
   }
 }

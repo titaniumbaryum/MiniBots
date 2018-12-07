@@ -13,6 +13,7 @@ export class Node {
     this.outputs = new IterableObject();
     this.update();
   }
+  reset(){}
   update(){
     if(this.options.outputs){
       for(let id of this.options.outputs){

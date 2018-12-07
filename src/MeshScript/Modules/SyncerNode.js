@@ -26,4 +26,7 @@ export class SyncerNode extends Node{
       o("output",p);
     }
   }
+  reset(){
+    this.triggedLinksId=[];
+  }
 }

@@ -30,14 +30,13 @@ export class MeshScript{
     }
   }
   pause(){
-    for(var i in this.links){
-      this.links[i].pause();
-    }
+    for(let [id,link] of this.links)link.pause();
   }
   unpause(){
-    for(var i in this.links){
-      this.links[i].unpause();
-    }
+    for(let [id,link] of this.links)link.unpause();
+  }
+  reset(){
+    for(let [id,object] of [...this.nodes,...this.links])object.reset();
   }
   toString(){
     const nodeDescriptors = {};
