@@ -31,7 +31,7 @@ class ParamBar extends Component {
       dom.push(<Separator/>);
       for(let param of this.props.node.editor.parameters){
         dom.push(<ParamLabel text={param.name}/>);
-        dom.push(<ParamBox type={param.type} value={this.props.node.options[param.key]} onChange={v=>this.__updateValue(param.key,v)}/>);
+        dom.push(<ParamBox type={param.type} value={this.props.node.options[param.key]} options={param.options} onChange={v=>this.__updateValue(param.key,v)}/>);
       }
     }
     return <div className="parambar-box">{dom}</div>;
@@ -60,6 +60,12 @@ function ParamBox(props){
       dom.push(<div className="parambar-color" style={{color:color,boxShadow:props.value==color?"0 5px 10px -5px black":"none"}} onClick={e=>props.onChange(color)}></div>)
     }
     return( <div className="parambar-colors">{dom}</div> );
+  }else if(props.type == "select"){
+    const dom = [];
+    for(const {text,value} of props.options){
+      dom.push(<option value={value}>{text}</option>)
+    }
+    return( <select value={props.value} onChange={e=>props.onChange(e.target.value)}>{dom}</select> );
   }
 }
 export default ParamBar;
