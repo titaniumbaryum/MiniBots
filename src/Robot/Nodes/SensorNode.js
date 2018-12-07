@@ -14,7 +14,7 @@ export class SensorNode extends Node{
     ];
     this.outputs["true"]=[];
     this.outputs["false"]=[];
-    this.options.condition=typeof this.options.condition !== "undefined"?this.options.condition:this.editor.parameters[0].options[0];
+    this.options.condition=typeof this.options.condition !== "undefined"?this.options.condition:this.editor.parameters[0].options[0].value;
   }
   __renderMainBody(ctx){
     ctx.beginPath();
