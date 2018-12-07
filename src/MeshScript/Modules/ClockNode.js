@@ -13,6 +13,7 @@ export class ClockNode extends Node{
         outputs["output"][i].link.trigger({});
       }
     },this.options.period);
+    this.canConnect = false;
   }
   __renderMainBody(ctx){
     ctx.beginPath();

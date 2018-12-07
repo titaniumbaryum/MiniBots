@@ -11,6 +11,7 @@ export class Node {
     };
     this.options=typeof options !== "undefined"?options:{};
     this.outputs = new IterableObject();
+    this.canConnect = true;
     this.update();
   }
   reset(){}

@@ -4,6 +4,7 @@ export class PulseNode extends Node{
     super(options);
     this.editor.parameters = [];
     this.outputs[" "]=[];
+    this.canConnect = false;
   }
   __renderMainBody(ctx){
     ctx.beginPath();

@@ -62,7 +62,7 @@ class Screen extends Component {
     tool.on("up",e=>{
       if(tool.holding.type == "output"){
         const col = this.__findCollisions(e.point,false,true,false);
-        if(col.nodes.length){
+        if(col.nodes.length && col.nodes[0].canConnect){
           this.state.mesh.links[""+Math.round(Math.random()*1000000)] = new Link(tool.holding.node,tool.holding.output,col.nodes[0],{
             editor:{
               color:colorCycler.get()
