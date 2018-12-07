@@ -8,6 +8,7 @@ class Tester extends Component {
   // }
   render(){
     return (<div className="tester-box">
+      <button onClick={this.props.onClose}>close</button>
       <Screen field={this.props.field} robot={this.props.robot}/>
     </div>);
   }

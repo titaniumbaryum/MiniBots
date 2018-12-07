@@ -3,8 +3,13 @@ export default class Robot{
   constructor(field,start){
     this.field = field;
     this.position = new Point(start);
+    this.start = new Point(start);
     this.rotation = 0;
     this.charged = false;
+  }
+  reset(){
+    this.position = this.start.clone();
+    this.rotation = 0;
   }
   forward(){
     const future = this.__getFuture();

@@ -7,6 +7,7 @@ export class DephaserNode extends Node{
     ];
     this.outputs["output"]=[];
     this.options.period=typeof this.options.period !== "undefined"?this.options.period:1000;
+    this.timers=[];
   }
   __renderMainBody(ctx){
     ctx.beginPath();
