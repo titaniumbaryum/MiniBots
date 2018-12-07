@@ -60,4 +60,7 @@ export default class Robot{
     if(this.rotation==3){delta.x=-1;delta.y=0;}
     return this.position.plus(delta);
   }
+  inFrontOf(){
+    return this.field.get(...this.__getFuture());
+  }
 }
