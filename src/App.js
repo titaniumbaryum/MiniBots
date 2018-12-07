@@ -10,7 +10,7 @@ import {PulseNode} from "./MeshScript/Modules/PulseNode";
 import {ConditionNode} from "./MeshScript/Modules/ConditionNode";
 import {DephaserNode} from "./MeshScript/Modules/DephaserNode";
 import {SyncerNode} from "./MeshScript/Modules/SyncerNode";
-import {Forward,Left,Right} from "./Robot/Nodes";
+import {Forward,Left,Right} from "./Robot/Nodes/Motion";
 
 let testData = {tiles:[
   ["wall-S","wall-E","source","","","","","","",""],
