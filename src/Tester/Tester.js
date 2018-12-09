@@ -31,7 +31,12 @@ class Tester extends Component {
     this.props.mesh.unpause();
   }
   reset(){
-    this.props.mesh.reset();
+    this.pause();
+    setTimeout(()=>{
+      this.props.mesh.reset();
+      this.props.robot.reset();
+      this.play();
+    },500);
   }
 }
 export default Tester;
