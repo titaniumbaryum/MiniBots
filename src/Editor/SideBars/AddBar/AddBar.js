@@ -7,6 +7,7 @@ class AddBar extends Component {
     super(props);
     this.__renderNode = this.__renderNode.bind(this);
     this.__addNode = this.__addNode.bind(this);
+    this.__dragNode = this.__dragNode.bind(this);
     this.__cc = new ColorCycler();
   }
   __renderNode(c,node){
@@ -19,16 +20,23 @@ class AddBar extends Component {
   }
   __addNode(c,node){
     const id = Math.round(Math.random()*1000);
-    this.props.mesh.nodes[id] = new node({editor:{point:[0,0],color:c.color,name:node.name}})
+    this.props.mesh.nodes[id] = this.__createNode(c,node);
+  }
+  __createNode(c,node){
+    const n = new node({editor:{point:[0,0],color:c.color,name:node.name}})
     c.color = this.__cc.get();
     this.props.onUpdate();
     this.__renderNode(c,node);
+    return n;
+  }
+  __dragNode(e,c,node){
+    e.dataTransfer.setData("Node",this.__createNode(c,node));
   }
   render(){
     const dom = [];
     if(this.props.mesh){
       for(let [name,node] of this.props.mesh.constructor.nodeConstructors){
-        dom.push(<canvas ref={name} onClick={e=>this.__addNode(e.target,node)} width="160" height="160" className="addbar-canvas"/>);
+        dom.push(<canvas ref={name} onClick={e=>this.__addNode(e.target,node)} onDragStart={e=>this.__dragNode(e,e.target,node)} draggable="true" width="160" height="160" className="addbar-canvas"/>);
       }
     }
     return <div className="addbar-box">{dom}</div>;

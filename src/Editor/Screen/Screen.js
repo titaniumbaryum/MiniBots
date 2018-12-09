@@ -86,6 +86,13 @@ class Screen extends Component {
         return {zoom:state.zoom+e.delta}
       });
     });
+    tool.on("dropin",e=>{
+      const o = JSON.parse(e.holding);
+      const id = Math.round(Math.random()*1000);
+      this.props.mesh.nodes[id] = new this.state.mesh.constructor.nodeConstructors[o.type](o);
+      this.props.mesh.nodes[id].options.editor.point = [...e.point];
+      this.forceUpdate();
+    });
     this.componentDidUpdate();
   }
   componentDidUpdate() {

@@ -1,9 +1,10 @@
 import { Point } from './Math2d';
 class ToolEvent extends CustomEvent{
-  constructor(type,point,delta){
+  constructor(type,point,delta,holding){
     super(type);
     this.point = point;
     this.delta = delta;
+    this.holding = holding;
   }
 }
 export default class Tool extends EventTarget{
@@ -64,6 +65,13 @@ export default class Tool extends EventTarget{
       this.dispatchEvent(te);
       e.preventDefault();
       return false;
+    });
+    c.addEventListener("dragover",e=>e.preventDefault());
+    c.addEventListener("drop",e=>{
+      e.preventDefault();
+      const p = toCanvasCoordinates(e,c);
+      const te = new ToolEvent("dropin",p,null,e.dataTransfer.getData("Node"));
+      this.dispatchEvent(te);
     });
   }
   on(type,fun){this.addEventListener(type,fun);}
