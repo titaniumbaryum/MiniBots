@@ -18,6 +18,14 @@ export default class Tool extends EventTarget{
         (evt.clientX - rect.left) * matrix.b + (evt.clientY - rect.top) * matrix.d + matrix.f
       );
     }
+    function toCanvasCoordinatesVector(p,c){
+      const rect = c.getBoundingClientRect();
+      const matrix = c.getContext("2d").getTransform().invertSelf();
+      return new Point(
+        (p.x) * matrix.a + (p.y) * matrix.c,
+        (p.y) * matrix.b + (p.y) * matrix.d
+      );
+    }
     //resize
     let running = false;
     window.addEventListener("resize", ()=>{
@@ -32,28 +40,38 @@ export default class Tool extends EventTarget{
     c.addEventListener("mousedown",e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("down",p);
-      this.__prevMouseEvent = te;
+      this.__prevEvent = te;
+      this.__prevMouseEvent = e;
       if(e.buttons==1)this.dispatchEvent(te);
     });
     c.addEventListener("mouseup",e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("up",p);
-      this.__prevMouseEvent = te;
+      this.__prevEvent = te;
+      this.__prevMouseEvent = e;
       if(e.button==0)this.dispatchEvent(te);
     });
     c.addEventListener("mousemove",e=>{
       if(!this.__prevMouseEvent)return;
       const p = toCanvasCoordinates(e,c);
-      const tde = new ToolEvent("drag",p,p.minus(this.__prevMouseEvent.point));
-      const tme = new ToolEvent("move",p,p.minus(this.__prevMouseEvent.point));
-      this.__prevMouseEvent = tde;
-      if(e.buttons==1)this.dispatchEvent(tde);
-      if(e.buttons==4)this.dispatchEvent(tme);
+      const d = toCanvasCoordinatesVector(new Point(e.clientX,e.clientY).minus([this.__prevMouseEvent.clientX,this.__prevMouseEvent.clientY]),c);
+      this.__prevMouseEvent = e;
+      if(e.buttons==1){
+        const tde = new ToolEvent("drag",p,d);
+        this.dispatchEvent(tde);
+        this.__prevEvent = tde;
+      }
+      if(e.buttons==4){
+        const tme = new ToolEvent("move",p,d);
+        this.dispatchEvent(tme);
+        this.__prevEvent = tme;
+      }
     });
     c.addEventListener("wheel",e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("zoom",p,Math.sign(e.deltaY));
-      this.__prevMouseEvent = te;
+      this.__prevEvent = te;
+      this.__prevMouseEvent = e;
       this.dispatchEvent(te);
       e.preventDefault();
       return false;
@@ -61,7 +79,8 @@ export default class Tool extends EventTarget{
     c.addEventListener("contextmenu",e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("menu",p);
-      this.__prevMouseEvent = te;
+      this.__prevEvent = te;
+      this.__prevMouseEvent = e;
       this.dispatchEvent(te);
       e.preventDefault();
       return false;
