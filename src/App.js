@@ -13,6 +13,7 @@ import {ConditionNode} from "./MeshScript/Modules/ConditionNode";
 import {DephaserNode} from "./MeshScript/Modules/DephaserNode";
 import {SyncerNode} from "./MeshScript/Modules/SyncerNode";
 import {Forward,Left,Right} from "./Robot/Nodes/Motion";
+import {Charge,Discharge} from "./Robot/Nodes/Action";
 import {SensorNode} from "./Robot/Nodes/SensorNode";
 
 let testData = {tiles:[
@@ -23,7 +24,7 @@ let testData = {tiles:[
 class App extends Component {
   constructor(props){
     super(props);
-    const nodes = [ClockNode,PulseNode,ConditionNode,DephaserNode,SyncerNode,Forward,Left,Right,SensorNode];
+    const nodes = [ClockNode,PulseNode,ConditionNode,DephaserNode,SyncerNode,Forward,Left,Right,Charge,Discharge,SensorNode];
     for(const node of nodes) MeshScript.registerNodeConstructor(node);
     const nullBot = new Robot(new Field([[""]]),[0,0]);
     window.robot = nullBot;
