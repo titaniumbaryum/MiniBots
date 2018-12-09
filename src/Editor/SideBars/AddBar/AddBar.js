@@ -25,6 +25,7 @@ class AddBar extends Component {
   __createNode(c,node){
     const n = new node({editor:{point:[0,0],color:c.color,name:node.name}})
     c.color = this.__cc.get();
+    c.style.color = c.color;
     this.props.onUpdate();
     this.__renderNode(c,node);
     return n;
