@@ -24,6 +24,12 @@ class Motion extends Node{//abstract
   reset(){
     for(const t of this.cancelTokens)t.canceled=true;
   }
+  __renderMainBody(ctx){
+    ctx.beginPath();
+    ctx.arc(...this.getPosition(),50,0,2*Math.PI);
+    if(this.options.steps>1)ctx.fillText(this.options.steps,...this.getPosition());
+    ctx.stroke();
+  }
 }
 export class Forward extends Motion{
   constructor(options){
