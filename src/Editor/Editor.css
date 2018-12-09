@@ -1,34 +1,48 @@
-.header,.frame,.sidebar{
-  display: block;
-  position: fixed;
+.editor-container{
+  display: grid;
+  grid-template-columns: auto 300px;
+  grid-template-rows: min-content auto;
+  grid-template-areas: "header header" "frame sidebar";
   overflow: hidden;
   box-sizing: border-box;
-  transition: top .5s,width .5s,height .5s;
-}
-.header{
-  top:0;left:0;
+  position: fixed;
   width: 100vw;
-  height: 40px;
-  border-bottom: solid 1px grey;
+  height: 100vh;
 }
-.app.open .frame{
-  top:40px;left:0;
-  width: calc(100vw - 300px);
-  height: calc(100vh - 40px);
+.editor-element{
+  display: block;
+  position: relative;
+  overflow: hidden;
 }
-.app.open .sidebar{
-  top:40px;right:0;
-  width: 300px;
-  height: calc(100vh - 40px);
-  border-left: solid 1px grey;
+.editor-container .header{
+  grid-area: header;
+  background: rgb(30,30,30);
 }
-.app:not(.open) .frame{
-  top:40px;left:0;
-  width: 100vw;
-  height: calc(100vh - 40px);
+.editor-container .sidebar{
+  background: rgb(40,40,40);
+  color: #af8d8d;
+  overflow-y: auto;
+  grid-area: sidebar;
 }
-.app:not(.open) .sidebar{
-  top:40px;right:0;
-  width: 0px;
-  height: calc(100vh - 40px);
+.editor-container .frame{
+  grid-area: frame;
+}
+/* width */
+.editor-container .sidebar::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgb(50,50,50);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(70,70,70);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

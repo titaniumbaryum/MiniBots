@@ -5,7 +5,21 @@ input,textarea,.parambar-button,select{
   padding: 10px 5px;
   border-radius: 5px;
   border: solid 1px grey;
+  border: none;
   display: block;
+  background: rgb(50,50,50);
+  color: #6a5353;
+  font-weight: bold;
+}
+.parambar-button{
+  background: rgb(20,20,20);
+  color: #a76d6d;
+  text-transform: uppercase;
+  font-family: SANS-SERIF;
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
 }
 textarea{
   min-height: 100px;
@@ -32,8 +46,12 @@ textarea{
   display: block;
   box-sizing: border-box;
   flex-grow: 1;
-  border: solid 5px;
+  border-top: solid 2px;
+  border-bottom: solid 2px;
+  border: solid 2px;
   position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 .parambar-color:before{
   content:"";
@@ -44,19 +62,24 @@ textarea{
 .parambar-color:after{
   content:"";
   display: block;
-  width: 50%;
-  height: 50%;
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
   border-radius: 50px;
   position: absolute;
-  box-sizing: border-box;
-  border: solid 5px;
-  top: 50%;
-  left: 50%;
+  border: solid 2px;
+  top: 100%;
+  left: 0%;
   transform: translate(-50%,-50%);
+}
+.parambar-color:nth-child(odd):after{
+  top: 100%;
+  left: 100%;
 }
 .parambar-color:first-child{
   border-radius: 5px 0 0 5px;
+  border-left: solid 2px;
 }
 .parambar-color:last-child{
   border-radius: 0 5px 5px 0;
+  border-right: solid 2px;
 }

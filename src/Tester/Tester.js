@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Tester.css';
-import Screen from './Screen'
+import Screen from './Screen';
+import MenuBar from '../MenuBar/MenuBar';
+import MenuBarItem from '../MenuBar/MenuBarItem';
 
 class Tester extends Component {
   constructor(props){
@@ -11,10 +13,14 @@ class Tester extends Component {
   }
   render(){
     return (<div className="tester-box">
-      <button onClick={this.props.onClose}>close</button>
-      <button onClick={this.pause}>pause</button>
-      <button onClick={this.play}>play</button>
-      <button onClick={this.reset}>reset</button>
+      <div className="header">
+        <MenuBar>
+          <MenuBarItem onClick={this.props.onClose} icon ="close" text="Close"/>
+          <MenuBarItem onClick={this.pause} icon ="pause" text="Pause"/>
+          <MenuBarItem onClick={this.play} icon ="play_arrow" text="Play"/>
+          <MenuBarItem onClick={this.reset} icon ="settings_backup_restore" text="Reset"/>
+        </MenuBar>
+      </div>
       <Screen field={this.props.field} robot={this.props.robot}/>
     </div>);
   }

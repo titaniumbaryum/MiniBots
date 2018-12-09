@@ -5,6 +5,7 @@ import Field from '../Robot/Field';
 class Screen extends Component {
   constructor(props){
     super(props);
+    this.active = false;
   }
   render(){
     return (
@@ -15,15 +16,18 @@ class Screen extends Component {
   }
   componentDidMount(){
     this.componentDidUpdate();
-    setInterval(()=>{
+    this.active = true;
+    const upd = ()=>{
       this.update();
-    },1000/60);
+      if(this.active)requestAnimationFrame(upd);
+    };
+    requestAnimationFrame(upd);
   }
   componentDidUpdate(){
     this.ctx = this.c.getContext("2d");
   }
   componentWillUnmount(){
-
+    this.active = false;
   }
   update(){
     const minWidth = 10;//parameters
@@ -37,9 +41,6 @@ class Screen extends Component {
     this.c.width = this.sizer.clientWidth;//responsive
     this.c.height = this.sizer.clientWidth/width*height;//fixed aspect ratio
     this.ctx.resetTransform();
-
-    this.ctx.fillStyle = "rgb(50,50,50)";//black bg
-    this.ctx.fillRect(0,0,this.c.width,this.c.height);
 
     this.ctx.translate(this.c.width/2,this.c.height/2);//centering part 1
 

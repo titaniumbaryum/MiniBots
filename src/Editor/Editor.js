@@ -3,6 +3,8 @@ import './Editor.css';
 import Screen from './Screen/Screen';
 import ParamBar from './SideBars/ParamBar/ParamBar';
 import AddBar from './SideBars/AddBar/AddBar';
+import MenuBar from '../MenuBar/MenuBar';
+import MenuBarItem from '../MenuBar/MenuBarItem';
 
 class Editor extends Component {
   constructor(props){
@@ -39,13 +41,15 @@ class Editor extends Component {
   }
   render() {
     return (
-      <div className="app open">
-        <div className="header">
-          <button onClick={this.save}>save</button>
-          <button onClick={this.props.onPlay}>play</button>
+      <div className="editor-container open">
+        <div className="header editor-element">
+          <MenuBar>
+            <MenuBarItem onClick={this.props.onPlay} icon="play_arrow" text="Run Script"/>
+            <MenuBarItem onClick={this.save} icon="save" text="Save To File"/>
+          </MenuBar>
         </div>
-        <div className="frame"><Screen ref="screen" mesh={this.state.mesh} onSelect={this.selectNode}/></div>
-        <div className="sidebar">
+        <div className="frame editor-element"><Screen ref="screen" mesh={this.state.mesh} onSelect={this.selectNode}/></div>
+        <div className="sidebar editor-element">
           {this.state.selectedNode?
             (<ParamBar node={this.state.selectedNode} onUpdate={this.refresh} onDelete={this.deleteNode}/>):
             (<AddBar mesh={this.state.mesh} onUpdate={this.refresh}/>)
