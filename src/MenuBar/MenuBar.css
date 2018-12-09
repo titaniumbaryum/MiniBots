@@ -39,7 +39,7 @@
 .menubaritem-text{
   box-sizing: border-box;
   overflow: hidden;
-  transition: max-width .5s;
+  transition: max-width 1s;
   width: auto;
   max-width: 0;
   white-space: nowrap;
@@ -50,5 +50,21 @@
   width: 10px;
 }
 .menubaritem:hover .menubaritem-text{
-  max-width: 150px;
+  max-width: 200px;
+}
+.menubarinput{
+  background: none;
+  border: none;
+  color: white;
+  margin: 0;
+  padding: 5px 0;
+  width: min-content;
+  min-width: auto;
+  overflow: visible;
+  transition: opacity .5s;
+  opacity: .5;
+  border-radius: 0;
+}
+.menubarinput:hover{
+  opacity: 1;
 }
