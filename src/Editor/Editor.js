@@ -15,6 +15,7 @@ class Editor extends Component {
       selectedNode:null,
     };
     this.save = this.save.bind(this);
+    this.load = this.load.bind(this);
     this.selectNode = this.selectNode.bind(this);
     this.refresh = this.refresh.bind(this);
     this.deleteNode = this.deleteNode.bind(this);
@@ -46,6 +47,7 @@ class Editor extends Component {
           <MenuBar>
             <MenuBarItem onClick={this.props.onPlay} icon="play_arrow" text="Run Script"/>
             <MenuBarItem onClick={this.save} icon="save" text="Save To File"/>
+            <MenuBarItem onClick={this.load} icon="eject" text="Load From File"/>
           </MenuBar>
         </div>
         <div className="frame editor-element"><Screen ref="screen" mesh={this.state.mesh} onSelect={this.selectNode}/></div>
@@ -66,6 +68,9 @@ class Editor extends Component {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+  load(){
+    alert("not yet implemented")
   }
 }
 

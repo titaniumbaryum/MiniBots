@@ -50,5 +50,5 @@
   width: 10px;
 }
 .menubaritem:hover .menubaritem-text{
-  max-width: 100px;
+  max-width: 150px;
 }
