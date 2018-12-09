@@ -89,7 +89,7 @@ export default class Tool extends EventTarget{
     c.addEventListener("drop",e=>{
       e.preventDefault();
       const p = toCanvasCoordinates(e,c);
-      const te = new ToolEvent("dropin",p,null,e.dataTransfer.getData("Node"));
+      const te = new ToolEvent("dropin",p,null,e.dataTransfer.items);
       this.dispatchEvent(te);
     });
   }

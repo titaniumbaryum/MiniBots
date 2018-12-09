@@ -87,11 +87,24 @@ class Screen extends Component {
       });
     });
     tool.on("dropin",e=>{
-      const o = JSON.parse(e.holding);
-      const id = Math.round(Math.random()*1000);
-      this.props.mesh.nodes[id] = new this.state.mesh.constructor.nodeConstructors[o.type](o);
-      this.props.mesh.nodes[id].options.editor.point = [...e.point];
-      this.forceUpdate();
+      for(const item of e.holding){
+        if(item.type === "node"){
+          item.getAsString(s=>{
+            const o = JSON.parse(s);
+            const id = Math.round(Math.random()*1000);
+            this.props.mesh.nodes[id] = new this.state.mesh.constructor.nodeConstructors[o.type](o);
+            this.props.mesh.nodes[id].options.editor.point = [...e.point];
+            this.forceUpdate();
+          });
+        }else if(item.kind === "file" && item.type === "application/json"){
+          const reader = new FileReader();
+          reader.addEventListener("loadend",e=>{
+            this.state.mesh.set(JSON.parse(reader.result));
+            this.forceUpdate();
+          });
+          reader.readAsText(item.getAsFile());
+        }
+      }
     });
     this.componentDidUpdate();
   }

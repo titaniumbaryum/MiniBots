@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
 import './Editor.css';
 import Screen from './Screen/Screen';
 import ParamBar from './SideBars/ParamBar/ParamBar';
@@ -70,7 +71,14 @@ class Editor extends Component {
     document.body.removeChild(a);
   }
   load(){
-    alert("not yet implemented")
+    toast.info('Drag A File On The Coding Area', {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+    });
   }
 }
 

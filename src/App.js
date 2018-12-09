@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Editor from './Editor/Editor';
 import Tester from './Tester/Tester';
@@ -38,8 +40,21 @@ class App extends Component {
     this.closePlayField = this.closePlayField.bind(this);
   }
   render() {
-    if(this.state.screen=="editor") return <Editor mesh={this.state.mesh} onPlay={this.play}/>;
-    else if(this.state.screen=="tester")return <Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closePlayField}/>;
+    const n =[];
+    if(this.state.screen=="editor") n.push(<Editor mesh={this.state.mesh} onPlay={this.play}/>);
+    else if(this.state.screen=="tester") n.push(<Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closePlayField}/>);
+    n.push(<ToastContainer
+      position="bottom-center"
+      autoClose={2000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnVisibilityChange={false}
+      draggable={false}
+      pauseOnHover={false}
+    />);
+    return n;
   }
   componentDidMount(){
     this.setField(testData);

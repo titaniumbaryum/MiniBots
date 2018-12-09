@@ -3,10 +3,14 @@ import {Link} from "./Link";
 import {Node} from "./Node";
 export class MeshScript{
   constructor(descriptor = {}){
-    const nodeDescriptors = new IterableObject(descriptor.nodes||{});
-    const linkDescriptors = new IterableObject(descriptor.links||{});
     this.nodes=new IterableObject();
     this.links=new IterableObject();
+    this.set(descriptor);
+  }
+  set(descriptor={}){
+    this.destroy();
+    const nodeDescriptors = new IterableObject(descriptor.nodes||{});
+    const linkDescriptors = new IterableObject(descriptor.links||{});
     //node creation from patern
     for(const [id,n] of nodeDescriptors){
       if(n.type && n.type in MeshScript.nodeConstructors){
@@ -21,11 +25,11 @@ export class MeshScript{
     }
   }
   destroy(){
-    for(var i in this.links){
-      this.links[i].disconnect();
+    for(const [i,v] of this.links){
+      v.disconnect();
       delete this.links[i];
     }
-    for(var i in this.nodes){
+    for(const [i,v] of this.nodes){
       delete this.nodes[i];
     }
   }
