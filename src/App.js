@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './Toast.css';
 import './App.css';
 import Editor from './Editor/Editor';
 import Tester from './Tester/Tester';
+import TitleScreen from './TitleScreen/TitleScreen';
 import Field from './Robot/Field';
 import Robot from './Robot/Robot';
 import {MeshScript} from "./MeshScript/Core/MeshScript";
@@ -16,11 +18,11 @@ import {Forward,Left,Right} from "./Robot/Nodes/Motion";
 import {Charge,Discharge} from "./Robot/Nodes/Action";
 import {SensorNode} from "./Robot/Nodes/SensorNode";
 
-let testData = {tiles:[
+let games = [{tiles:[
   ["wall-S","wall-E","source","","","","","","",""],
   ["exit","wall-SEW","","sink","","","","","",""],
   ["","","","","","","","","",""],
-],start:[0,2]};
+],start:[0,2],title:"test1",description:"descriptive description."}];
 class App extends Component {
   constructor(props){
     super(props);
@@ -32,18 +34,25 @@ class App extends Component {
       mesh:new MeshScript(),
       field:nullBot.field,
       robot:nullBot,
-      screen:"editor"
+      screen:"titlescreen"
     }
     //binds
     this.setField = this.setField.bind(this);
     this.setScreen = this.setScreen.bind(this);
     this.play = this.play.bind(this);
-    this.closePlayField = this.closePlayField.bind(this);
+    this.closeTester = this.closeTester.bind(this);
+    this.closeEditor = this.closeEditor.bind(this);
+    this.selectGame = this.selectGame.bind(this);
   }
   render() {
+    const screens = {
+      "editor" : ()=><Editor mesh={this.state.mesh} onPlay={this.play} onClose={this.closeEditor}/>,
+      "tester" : ()=><Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closeTester}/>,
+      "titlescreen" : ()=><TitleScreen games={games} onSelect={this.selectGame}/>,
+    }
     const n =[];
-    if(this.state.screen=="editor") n.push(<Editor mesh={this.state.mesh} onPlay={this.play}/>);
-    else if(this.state.screen=="tester") n.push(<Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closePlayField}/>);
+    if(this.state.screen in screens)n.push(screens[this.state.screen]());
+    else n.push(<h1 style={{textAlign:"center"}}>An error occured</h1>);
     n.push(<ToastContainer
       position="bottom-center"
       autoClose={2000}
@@ -55,10 +64,9 @@ class App extends Component {
       draggable={false}
       pauseOnHover={false}
     />);
-    return n;
+    return <div className="app-container">{n}</div>;
   }
   componentDidMount(){
-    this.setField(testData);
   }
   setField({tiles,start}){
     window.robot = new Robot(new Field(tiles),start);
@@ -73,9 +81,16 @@ class App extends Component {
     this.state.mesh.unpause();
     this.state.robot.reset();
   }
-  closePlayField(){
+  closeTester(){
     this.setScreen("editor")
     this.state.mesh.pause();
+  }
+  closeEditor(){
+    this.setScreen("titlescreen");
+  }
+  selectGame(s){
+    this.setField(s);
+    this.setScreen("editor");
   }
 }
 
