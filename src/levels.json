@@ -1,0 +1,19 @@
+[
+  {
+    "tiles":[
+      ["wall-S","wall-E","source","","","","","","",""],
+      ["exit","wall-SEW","","sink","","","","","",""],
+      ["","","","","","","","","",""]
+    ],
+    "start":[0,2],
+    "title":"test1",
+    "description":"descriptive description.",
+    "icon":"view_module"
+  },
+  {"tiles":[[""]],
+    "start":[0,0],
+    "title":"single cell",
+    "description":"it's not much :./",
+    "icon":"view_day"
+  }
+]

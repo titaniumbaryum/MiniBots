@@ -1,0 +1,40 @@
+.titlescreen-box .content{
+  max-width:1080px;
+  width: 100vw;
+  margin: auto;
+  padding: 10px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+.titlescreen-box h1,.titlescreen-box h2,.titlescreen-box h3,.titlescreen-box p,.titlescreen-box a{
+  color: #6a5353;
+  margin: 0 10px;
+}
+.titlescreen-box h1{
+  font-size: 100px;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: -10px;
+}
+.titlescreen-box .separator{
+  width: 100%;
+  border-bottom: solid 1px #6a5353;
+  box-sizing: border-box;
+}
+.titlescreen-box .levels{
+  padding: 10px;
+}
+.titlescreen-box .level{
+  margin-bottom: 10px;
+  cursor: pointer;
+  color: #6a5353;
+  transition: color .5s;
+}
+.titlescreen-box .level-icon{
+  font-size: 40px;
+  float: left;
+  margin: 5px;
+}
+.titlescreen-box .level:hover{
+  color: rgb(170,170,170);
+}

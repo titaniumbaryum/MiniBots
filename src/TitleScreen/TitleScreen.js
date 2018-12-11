@@ -4,33 +4,30 @@ import './TitleScreen.css';
 class TitleScreen extends Component {
   constructor(props){
     super(props);
-    this.pause = this.pause.bind(this);
-    this.play = this.play.bind(this);
-    this.reset = this.reset.bind(this);
   }
   render(){
     const levels = [];
-    for(const game of this.props.games){
-      levels.push(<div className="level" onClick={()=>this.props.onSelect(game)}>{game.title}</div>);
+    for(const level of this.props.levels){
+      levels.push(<div className="level" onClick={()=>this.props.onSelect(level)}>
+        <i className="material-icons level-icon">{level.icon}</i>
+        <h3 className="level-title">{level.title}</h3>
+        <p className="level-title">{level.description}</p>
+      </div>);
     }
     return (<div className="titlescreen-box">
-      <h1>MiniBots</h1>
-      <div className="levels">{levels}</div>
+      <div className="content">
+        <h1>MiniBots</h1>
+        <p>A game where you learn to code by making node networks.</p>
+        <Separator/>
+        <h2>Levels</h2>
+        <div className="levels">{levels}</div>
+        <Separator/>
+        <p>Made with ❤ and react by <a href="//titouan.eu">Titouan Baillon</a>.</p>
+      </div>
     </div>);
   }
-  pause(){
-    this.props.mesh.pause();
-  }
-  play(){
-    this.props.mesh.unpause();
-  }
-  reset(){
-    this.pause();
-    setTimeout(()=>{
-      this.props.mesh.reset();
-      this.props.robot.reset();
-      this.play();
-    },500);
-  }
+}
+function Separator(props){
+  return <div className="separator"></div>;
 }
 export default TitleScreen;

@@ -17,12 +17,8 @@ import {SyncerNode} from "./MeshScript/Modules/SyncerNode";
 import {Forward,Left,Right} from "./Robot/Nodes/Motion";
 import {Charge,Discharge} from "./Robot/Nodes/Action";
 import {SensorNode} from "./Robot/Nodes/SensorNode";
+import levels from "./levels";
 
-let games = [{tiles:[
-  ["wall-S","wall-E","source","","","","","","",""],
-  ["exit","wall-SEW","","sink","","","","","",""],
-  ["","","","","","","","","",""],
-],start:[0,2],title:"test1",description:"descriptive description."}];
 class App extends Component {
   constructor(props){
     super(props);
@@ -48,7 +44,7 @@ class App extends Component {
     const screens = {
       "editor" : ()=><Editor mesh={this.state.mesh} onPlay={this.play} onClose={this.closeEditor}/>,
       "tester" : ()=><Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closeTester}/>,
-      "titlescreen" : ()=><TitleScreen games={games} onSelect={this.selectGame}/>,
+      "titlescreen" : ()=><TitleScreen levels={levels} onSelect={this.selectGame}/>,
     }
     const n =[];
     if(this.state.screen in screens)n.push(screens[this.state.screen]());
