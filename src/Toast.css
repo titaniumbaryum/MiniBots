@@ -3,10 +3,36 @@
   top: 60px;
 }
 /* === Toast ===*/
-.Toastify__toast--warning {
-  border-left: solid 5px #f1c40f;
+.Toastify__toast--warning,.Toastify__toast--error,.Toastify__toast--success{
   background: rgb(30,30,30);
   padding: 15px 8px;
+}
+.Toastify__toast-container--top-left .Toastify__toast--warning,.Toastify__toast-container--bottom-left .Toastify__toast--warning{
+  border-left: solid 5px #f1c40f;
+}
+.Toastify__toast-container--top-right .Toastify__toast--warning,.Toastify__toast-container--bottom-right .Toastify__toast--warning{
+  border-right: solid 5px #f1c40f;
+}
+.Toastify__toast-container--top-center .Toastify__toast--warning,.Toastify__toast-container--bottom-center .Toastify__toast--warning{
+  border-top: solid 5px #f1c40f;
+}
+.Toastify__toast-container--top-left .Toastify__toast--error,.Toastify__toast-container--bottom-left .Toastify__toast--error{
+  border-left: solid 5px #e74c3c;
+}
+.Toastify__toast-container--top-right .Toastify__toast--error,.Toastify__toast-container--bottom-right .Toastify__toast--error{
+  border-right: solid 5px #e74c3c;
+}
+.Toastify__toast-container--top-center .Toastify__toast--error,.Toastify__toast-container--bottom-center .Toastify__toast--error{
+  border-top: solid 5px #e74c3c;
+}
+.Toastify__toast-container--top-left .Toastify__toast--success,.Toastify__toast-container--bottom-left .Toastify__toast--success{
+  border-left: solid 5px #07bc0c;
+}
+.Toastify__toast-container--top-right .Toastify__toast--success,.Toastify__toast-container--bottom-right .Toastify__toast--success{
+  border-right: solid 5px #07bc0c;
+}
+.Toastify__toast-container--top-center .Toastify__toast--success,.Toastify__toast-container--bottom-center .Toastify__toast--success{
+  border-top: solid 5px #07bc0c;
 }
 .Toastify__toast--info {
   background: rgb(70,70,70);

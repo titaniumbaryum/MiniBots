@@ -21,7 +21,10 @@ class Tester extends Component {
           <MenuBarItem onClick={this.reset} icon ="settings_backup_restore" text="Reset"/>
         </MenuBar>
       </div>
-      <Screen field={this.props.field} robot={this.props.robot}/>
+      <div className="tester-grid">
+        <div className="tester-screen"><Screen field={this.props.field} robot={this.props.robot}/></div>
+        <div className="tester-sidebar"></div>
+      </div>
     </div>);
   }
   pause(){

@@ -1,4 +1,5 @@
 import { Point } from '../utils/Math2d';
+import { toast } from 'react-toastify';
 export default class Robot{
   constructor(field,start){
     this.field = field;
@@ -16,6 +17,16 @@ export default class Robot{
     const future = this.__getFuture();
     if((!this.field.get(...future).includes("wall")) && this.field.get(...future)!="source" && this.field.get(...future)!="sink"){
       this.position = future;
+    }else{
+      toast.error('Forward imposible', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        closeButton: false
+      });
     }
   }
   left(){
@@ -27,10 +38,52 @@ export default class Robot{
     this.rotation %= 4;
   }
   charge(){
-    if(this.field.get(...this.__getFuture())=="source")this.charged = true;
+    if(this.field.get(...this.__getFuture())=="source" && !this.charged){
+      this.charged = true;
+      toast.success('↑ Charged succesfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        closeButton: false
+      });
+    }else{
+      toast.error('Can\'t charge here', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        closeButton: false
+      });
+    }
   }
   discharge(){
-    if(this.field.get(...this.__getFuture())=="sink")this.charged = false;
+    if(this.field.get(...this.__getFuture())=="sink" && this.charged){
+      this.charged = false;
+      toast.success('↓ Discharged succesfully!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        closeButton: false
+      });
+    }else{
+      toast.error('Can\'t discharge here', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        closeButton: false
+      });
+    }
   }
   render(ctx){
     ctx.save();

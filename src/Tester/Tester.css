@@ -12,3 +12,20 @@
   top: 0; left: 0;
   width: 100%;
 }
+.tester-box .tester-grid{
+  display: flex;
+}
+.tester-box .tester-screen{
+  flex-grow: 1;
+  height: 100vh
+}
+.tester-box .tester-sidebar{
+  width: 360px;
+  background: rgb(40,40,40);
+  height: 100vh;
+}
+@media only screen and (max-width: 1000px) {
+  .tester-box .tester-sidebar{
+    width: 0;
+  }
+}
