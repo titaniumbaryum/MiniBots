@@ -14,10 +14,9 @@ class Motion extends Node{//abstract
     const cancelToken = {canceled: false};
     this.cancelTokens.push(cancelToken);
     for(let i=0;i<this.options.steps;i++){
-      await new Promise((res,rej)=>this.timer=setTimeout(res,500));
+      await new Promise((res,rej)=>this.timer=setTimeout(res,100));
       if(cancelToken.canceled)break;
       window.robot[this.motion]();
-      console.log(this.motion);
     }
     this.cancelTokens.splice(this.cancelTokens.indexOf(cancelToken), 1);
     o(" ",p);

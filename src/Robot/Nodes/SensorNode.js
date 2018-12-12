@@ -28,8 +28,6 @@ export class SensorNode extends Node{
   }
   get code(){
     return function(p,output){
-      console.log(this.options.condition);
-      console.log(eval(this.options.condition));
       if(eval(this.options.condition)){
         output("true",p);
       }else{

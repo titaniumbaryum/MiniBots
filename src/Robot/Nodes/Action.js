@@ -13,7 +13,6 @@ class Action extends Node{//abstract
     await new Promise((res,rej)=>this.timer=setTimeout(res,500));
     if(!cancelToken.canceled){
       window.robot[this.action]();
-      console.log(this.action);
     }
     this.cancelTokens.splice(this.cancelTokens.indexOf(cancelToken), 1);
     o(" ",p);
