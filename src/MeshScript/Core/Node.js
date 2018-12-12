@@ -7,7 +7,8 @@ export class Node {
       parameters:[
         {type:"list",key:"outputs",name:"Outputs (separated by ,)"},
         {type:"textarea",key:"code",name:"Code"}
-      ]
+      ],
+      description:"the basic node, can only be used by developers"
     };
     this.options=typeof options !== "undefined"?options:{};
     this.outputs = new IterableObject();

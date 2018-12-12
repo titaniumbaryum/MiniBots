@@ -3,6 +3,7 @@ export class PulseNode extends Node{
   constructor(options){
     super(options);
     this.editor.parameters = [];
+    this.editor.description="pulses once";
     this.outputs[" "]=[];
     this.canConnect = false;
   }

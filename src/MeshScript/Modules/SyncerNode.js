@@ -5,6 +5,7 @@ export class SyncerNode extends Node{
     this.editor.parameters = [
       {type:"float",key:"awaits",name:"N° of nodes required"}
     ];
+    this.editor.description="sync two or more signals";
     this.outputs["output"]=[];
     this.triggedLinksId=[];
   }

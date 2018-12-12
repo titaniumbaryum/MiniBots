@@ -5,6 +5,7 @@ export class ClockNode extends Node{
     this.editor.parameters = [
       {type:"float",key:"period",name:"Clock period (ms)"}
     ];
+    this.editor.description="pulses at a frequency you define";
     this.outputs[" "]=[];
     this.options.period=typeof this.options.period !== "undefined"?this.options.period:1000;
     this.update();

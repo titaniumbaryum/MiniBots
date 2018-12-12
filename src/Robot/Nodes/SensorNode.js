@@ -12,6 +12,7 @@ export class SensorNode extends Node{
         {text:"charged",value:"window.robot.charged"},
       ]}
     ];
+    this.editor.description="Tests what is in front of the robot.";
     this.outputs["true"]=[];
     this.outputs["false"]=[];
     this.options.condition=typeof this.options.condition !== "undefined"?this.options.condition:this.editor.parameters[0].options[0].value;

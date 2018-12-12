@@ -5,6 +5,7 @@ class Motion extends Node{//abstract
     this.editor.parameters = [
       {type:"int",key:"steps",name:"Number of motions"}
     ];
+    this.editor.description="Generic Motion";
     this.outputs[" "]=[];
     this.options.steps=typeof this.options.steps !== "undefined"?this.options.steps:1;
     this.cancelTokens=[];
@@ -35,17 +36,20 @@ export class Forward extends Motion{
   constructor(options){
     super(options);
     this.motion = "forward";
+    this.editor.description="Go forward one or more time";
   }
 }
 export class Left extends Motion{
   constructor(options){
     super(options);
     this.motion = "left";
+    this.editor.description="Turn left one or more time";
   }
 }
 export class Right extends Motion{
   constructor(options){
     super(options);
     this.motion = "right";
+    this.editor.description="Turn right one or more time";
   }
 }

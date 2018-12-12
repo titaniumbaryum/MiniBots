@@ -5,6 +5,7 @@ export class DephaserNode extends Node{
     this.editor.parameters = [
       {type:"float",key:"period",name:"Delay time (ms)"}
     ];
+    this.editor.description="delays a signal by an amount you define";
     this.outputs["output"]=[];
     this.options.period=typeof this.options.period !== "undefined"?this.options.period:1000;
     this.timers=[];

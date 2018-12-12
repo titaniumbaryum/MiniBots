@@ -5,6 +5,7 @@ export class ConditionNode extends Node{
     this.editor.parameters = [
       {type:"text",key:"condition",name:"Condition (input parameters as p)"}
     ];
+    this.editor.description="this node is intended for developers";
     this.outputs["true"]=[];
     this.outputs["false"]=[];
     this.options.condition=typeof this.options.condition !== "undefined"?this.options.condition:"false";
