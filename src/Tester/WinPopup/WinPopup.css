@@ -1,0 +1,55 @@
+.winpopup-frame:not(.open){
+  display: none;
+}
+.winpopup-frame.open{
+  position: fixed;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: rgb(177, 158, 158);
+  padding: 10px 20px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 95%;
+}
+.winpopup-grid{
+  display: flex;
+  align-content: stretch;
+}
+.winpopup-bignumber-frame,.winpopup-StatSuccess-frame,.winpopup-grid button{
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  background: rgba(0,0,0,.2);
+  color: #5a4545;
+  padding: 10px;
+  margin: 5px;
+  flex-grow: 1;
+  border: none;
+}
+.winpopup-grid>*:first-child{
+  margin-left: 0px;
+}
+.winpopup-grid>*:last-child{
+  margin-right: 0px;
+}
+.winpopup-bignumber-frame>*{
+  display: inline-block;
+}
+.winpopup-bignumber-name{
+  font-size: 10px;
+  display: block;
+  position: absolute;
+  text-align: center;
+  top:0;
+  left:0;
+  width: 100%;
+}
+.winpopup-bignumber-number{
+  font-size: 40px;
+}
+.winpopup-grid button{
+  cursor: pointer;
+  font-size: 20px;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Tester.css';
-import Screen from './Screen';
+import Screen from './Screen/Screen';
+import WinPopup from './WinPopup/WinPopup';
 import MenuBar from '../MenuBar/MenuBar';
 import MenuBarItem from '../MenuBar/MenuBarItem';
 
@@ -10,6 +11,11 @@ class Tester extends Component {
     this.pause = this.pause.bind(this);
     this.play = this.play.bind(this);
     this.reset = this.reset.bind(this);
+    const update = ()=>{
+      this.forceUpdate();
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
   }
   render(){
     return (<div className="tester-box">
@@ -25,7 +31,19 @@ class Tester extends Component {
         <div className="tester-screen"><Screen field={this.props.field} robot={this.props.robot}/></div>
         <div className="tester-sidebar"></div>
       </div>
+      <WinPopup robot={this.props.robot} mesh={this.props.mesh} onClose={this.props.onClose}></WinPopup>
     </div>);
+  }
+  componentDidMount(){
+    this.active = true;
+    const upd = ()=>{
+      this.forceUpdate();
+      if(this.active)requestAnimationFrame(upd);
+    };
+    requestAnimationFrame(upd);
+  }
+  componentWillUnmount(){
+    this.active = false;
   }
   pause(){
     this.props.mesh.pause();
