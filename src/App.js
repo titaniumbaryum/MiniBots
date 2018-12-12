@@ -22,7 +22,7 @@ import levels from "./levels";
 class App extends Component {
   constructor(props){
     super(props);
-    const nodes = [ClockNode,PulseNode,ConditionNode,DephaserNode,SyncerNode,Forward,Left,Right,Charge,Discharge,SensorNode];
+    const nodes = [PulseNode,Forward,Left,Right,Charge,Discharge,SensorNode,SyncerNode,ClockNode,DephaserNode];
     for(const node of nodes) MeshScript.registerNodeConstructor(node);
     const nullBot = new Robot(new Field([[""]]),[0,0]);
     window.robot = nullBot;
