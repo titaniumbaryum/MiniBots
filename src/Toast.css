@@ -41,6 +41,7 @@
   min-height: auto;
   padding: 15px;
   opacity: .8;
+  user-select: none;
 }
 .Toastify__toast button{
   border-radius: 5px;
