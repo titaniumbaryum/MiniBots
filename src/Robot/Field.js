@@ -17,6 +17,11 @@ export default class Field{
     if(y>=this.height)return "wall";
     return this.tiles[y][x];
   }
+  set(x,y,v){
+    if(this.tiles[y] && typeof this.tiles[y][x]=="string"){
+      this.tiles[y][x]=v;
+    }
+  }
   get width(){
     return this.tiles[0].length;
   }
@@ -43,9 +48,17 @@ export default class Field{
     if(type == "source"){
       ctx.strokeStyle = "#ffbe76";
       ctx.strokeRect(3,3,94,94);
+      ctx.strokeRect(13,13,74,74);
+    }else if(type == "source-discharged"){
+      ctx.strokeStyle = "#ffbe76";
+      ctx.strokeRect(3,3,94,94);
     }else if(type == "sink"){
       ctx.strokeStyle = "#ffbe76";
       ctx.strokeRect(3,3,94,94);
+    }else if(type == "sink-charged"){
+      ctx.strokeStyle = "#ffbe76";
+      ctx.strokeRect(3,3,94,94);
+      ctx.strokeRect(13,13,74,74);
     }else if(type == "exit"){
       ctx.strokeStyle = "#7ed6df";
       ctx.strokeRect(3,3,94,94);
