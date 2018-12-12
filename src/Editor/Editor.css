@@ -9,6 +9,13 @@
   width: 100vw;
   height: 100vh;
 }
+@media only screen and (max-width:1000px) {
+  .editor-container{
+    grid-template-columns: 100%;
+    grid-template-rows: min-content 135px auto;
+    grid-template-areas: "header" "sidebar" "frame";
+  }
+}
 .editor-element{
   display: block;
   position: relative;

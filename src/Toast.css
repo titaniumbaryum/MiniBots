@@ -2,6 +2,9 @@
 .Toastify__toast-container--top-left{
   top: 60px;
 }
+.Toastify__toast-container--top-right{
+  top: 60px;
+}
 /* === Toast ===*/
 .Toastify__toast--warning,.Toastify__toast--error,.Toastify__toast--success{
   background: rgb(30,30,30);

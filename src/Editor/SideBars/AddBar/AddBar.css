@@ -12,7 +12,7 @@
 .addbar-canvas{
   display: block;
   margin: 5px auto;
-  width: 45%;
+  width: 110px;
   border: solid 1px;
   border-radius: 5px;
   box-shadow: 0 5px 10px -5px rgba(0,0,0,.5);

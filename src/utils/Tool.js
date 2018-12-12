@@ -11,11 +11,14 @@ export default class Tool extends EventTarget{
   constructor(c){
     super();
     function toCanvasCoordinates(evt,c){
+      const p = new Point();
+      if(evt instanceof TouchEvent){p.x=evt.changedTouches[0].clientX;p.y=evt.changedTouches[0].clientY;}
+      else{p.x=evt.clientX;p.y=evt.clientY;}
       const rect = c.getBoundingClientRect();
       const matrix = c.getContext("2d").getTransform().invertSelf();
       return new Point(
-        (evt.clientX - rect.left) * matrix.a + (evt.clientY - rect.top) * matrix.c + matrix.e,
-        (evt.clientX - rect.left) * matrix.b + (evt.clientY - rect.top) * matrix.d + matrix.f
+        (p.x - rect.left) * matrix.a + (p.y - rect.top) * matrix.c + matrix.e,
+        (p.x - rect.left) * matrix.b + (p.y - rect.top) * matrix.d + matrix.f
       );
     }
     function toCanvasCoordinatesVector(p,c){
@@ -37,36 +40,83 @@ export default class Tool extends EventTarget{
       });
     });
     //tool (mouse)
-    c.addEventListener("mousedown",e=>{
+    const mousedown = e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("down",p);
       this.__prevEvent = te;
       this.__prevMouseEvent = e;
-      if(e.buttons==1)this.dispatchEvent(te);
-    });
-    c.addEventListener("mouseup",e=>{
+      if((e instanceof TouchEvent && e.touches.length<2) || e.buttons==1)this.dispatchEvent(te);
+    }
+    c.addEventListener("mousedown",mousedown);
+    c.addEventListener("touchstart",mousedown);
+
+    const mouseup = e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("up",p);
       this.__prevEvent = te;
       this.__prevMouseEvent = e;
-      if(e.button==0)this.dispatchEvent(te);
-    });
-    c.addEventListener("mousemove",e=>{
-      if(!this.__prevMouseEvent)return;
+      if(e instanceof TouchEvent || e.button==0)this.dispatchEvent(te);
+    }
+    c.addEventListener("mouseup",mouseup);
+    c.addEventListener("touchend",mouseup);
+
+    const movecommon = e=>{
       const p = toCanvasCoordinates(e,c);
-      const d = toCanvasCoordinatesVector(new Point(e.clientX,e.clientY).minus([this.__prevMouseEvent.clientX,this.__prevMouseEvent.clientY]),c);
+      let dp;
+      if(e instanceof TouchEvent){
+        dp = new Point(e.touches[0].clientX,e.touches[0].clientY).minus([this.__prevMouseEvent.touches[0].clientX,this.__prevMouseEvent.touches[0].clientY])
+      }else{
+        dp = new Point(e.clientX,e.clientY).minus([this.__prevMouseEvent.clientX,this.__prevMouseEvent.clientY])
+      }
+      const d = toCanvasCoordinatesVector(dp,c);
       this.__prevMouseEvent = e;
+      return {p,d}
+    };
+    const mousemove = e=>{
+      if(!this.__prevMouseEvent)return;
+      const {p,d} = movecommon(e);
       if(e.buttons==1){
         const tde = new ToolEvent("drag",p,d);
         this.dispatchEvent(tde);
         this.__prevEvent = tde;
-      }
-      if(e.buttons==4){
+      }else if(e.buttons==4){
         const tme = new ToolEvent("move",p,d);
         this.dispatchEvent(tme);
         this.__prevEvent = tme;
       }
-    });
+    };
+    const touchmove = e=>{
+      if(!this.__prevMouseEvent)return;
+      const {p,d} = movecommon(e);
+      if(e.touches.length==1){
+        const tde = new ToolEvent("drag",p,d);
+        this.dispatchEvent(tde);
+        this.__prevEvent = tde;
+      }else if(e.touches.length==2){
+        const distance = new Point(e.touches[1].clientX,e.touches[1].clientY).minus([e.touches[0].clientX,e.touches[0].clientY]).length;
+        const prevDistance = new Point(this.__prevMouseEvent.touches[1].clientX,this.__prevMouseEvent.touches[1].clientY).minus([this.__prevMouseEvent.touches[0].clientX,this.__prevMouseEvent.touches[0].clientY]).length;
+        const distanceDelta = distance - prevDistance;
+        const centerEvent = {
+          clientX:e.touches[0].clientX+e.touches[1].clientX,
+          clientY:e.touches[0].clientY+e.touches[1].clientY
+        };
+        const prevCenterEvent = {
+          clientX:this.__prevMouseEvent.touches[0].clientX+this.__prevMouseEvent.touches[1].clientX,
+          clientY:this.__prevMouseEvent.touches[0].clientY+this.__prevMouseEvent.touches[1].clientY
+        };
+        const cp = toCanvasCoordinates(centerEvent,c);
+        const cd = toCanvasCoordinatesVector(new Point(centerEvent.clientX,centerEvent.clientY).minus([prevCenterEvent.clientX,prevCenterEvent.clientY]),c);
+        const tme = new ToolEvent("move",cp,cd);
+        const tze = new ToolEvent("zoom",cp,distanceDelta);
+        this.dispatchEvent(tme);
+        this.dispatchEvent(tze);
+        this.__prevEvent = tme;
+        e.preventDefault();
+      }
+    };
+    c.addEventListener("mousemove",mousemove);
+    c.addEventListener("touchmove",touchmove);
+
     c.addEventListener("wheel",e=>{
       const p = toCanvasCoordinates(e,c);
       const te = new ToolEvent("zoom",p,Math.sign(e.deltaY));
