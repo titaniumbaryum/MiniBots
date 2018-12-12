@@ -3,86 +3,63 @@ import { toast } from 'react-toastify';
 export default class Robot{
   constructor(field,start){
     this.field = field;
-    this.position = new Point(start);
     this.start = new Point(start);
-    this.rotation = 0;
-    this.charged = false;
+    this.reset();
   }
   reset(){
     this.position = this.start.clone();
     this.rotation = 0;
     this.charged = false;
+    this.history = [];
+    this.errors = [];
+    for(const {x,y,type} of this.field){
+      if(type.includes("source"))this.field.set(x,y,"source");
+      if(type.includes("sink"))this.field.set(x,y,"sink");
+    }
   }
   forward(){
+    if(this.won)return;
+    this.history.push("forward");
     const future = this.__getFuture();
-    if((!this.field.get(...future).includes("wall")) && this.field.get(...future)!="source" && this.field.get(...future)!="sink"){
+    const inFront = this.inFrontOf();
+    if(!inFront.includes("wall") && !inFront.includes("source") && !inFront.includes("sink")){
       this.position = future;
     }else{
-      toast.error('Forward imposible', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        closeButton: false
-      });
+      this.__error('Forward imposible');
     }
   }
   left(){
+    if(this.won)return;
     this.rotation += 1;
     this.rotation %= 4;
+    this.history.push("left");
   }
   right(){
+    if(this.won)return;
     this.rotation += 3;
     this.rotation %= 4;
+    this.history.push("Right");
   }
   charge(){
-    if(this.field.get(...this.__getFuture())=="source" && !this.charged){
+    if(this.won)return;
+    this.history.push("charge");
+    if(this.inFrontOf()=="source" && !this.charged){
       this.charged = true;
-      toast.success('↑ Charged succesfully!', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        closeButton: false
-      });
+      this.field.set(...this.__getFuture(),"source-discharged");
+      this.__success('↑ Charged successfully!');
     }else{
-      toast.error('Can\'t charge here', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        closeButton: false
-      });
+      this.__error('Can\'t charge here');
     }
   }
   discharge(){
-    if(this.field.get(...this.__getFuture())=="sink" && this.charged){
+    if(this.won)return;
+    this.history.push("discharge");
+    if(this.inFrontOf()=="sink" && this.charged){
       this.charged = false;
-      toast.success('↓ Discharged succesfully!', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        closeButton: false
-      });
+      this.field.set(...this.__getFuture(),"sink-charged");
+      this.__success('↓ Discharged successfully!');
     }else{
-      toast.error('Can\'t discharge here', {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        closeButton: false
-      });
+      this.__error('Can\'t discharge here');
     }
   }
   render(ctx){
@@ -113,6 +90,35 @@ export default class Robot{
     if(this.rotation==2){delta.x=0;delta.y=-1;}
     if(this.rotation==3){delta.x=-1;delta.y=0;}
     return this.position.plus(delta);
+  }
+  __error(e){
+    this.errors.push(e);
+    toast.error(e, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      closeButton: false
+    });
+  }
+  __success(s){
+    toast.success(s, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      closeButton: false
+    });
+  }
+  get won(){
+    for(const {x,y,type} of this.field){
+      if(type=="sink")return false;
+    }
+    return this.field.get(...this.position)==="exit";
   }
   inFrontOf(){
     return this.field.get(...this.__getFuture());
