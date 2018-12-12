@@ -8,7 +8,7 @@ input,textarea,.parambar-button,select{
   border: none;
   display: block;
   background: rgb(50,50,50);
-  color: #6a5353;
+  color: #cca9a9;
   font-weight: bold;
 }
 .parambar-button{
