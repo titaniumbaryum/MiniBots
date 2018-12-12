@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Screen.css';
-import Field from '../Robot/Field';
+import Field from '../../Robot/Field';
 
 class Screen extends Component {
   constructor(props){
@@ -16,18 +16,10 @@ class Screen extends Component {
   }
   componentDidMount(){
     this.componentDidUpdate();
-    this.active = true;
-    const upd = ()=>{
-      this.update();
-      if(this.active)requestAnimationFrame(upd);
-    };
-    requestAnimationFrame(upd);
   }
   componentDidUpdate(){
     this.ctx = this.c.getContext("2d");
-  }
-  componentWillUnmount(){
-    this.active = false;
+    this.update();
   }
   update(){
     const minWidth = 10;//parameters
