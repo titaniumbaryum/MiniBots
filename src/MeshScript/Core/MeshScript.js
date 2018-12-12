@@ -1,6 +1,5 @@
 import IterableObject from '../../utils/IterableObject';
 import {Link} from "./Link";
-import {Node} from "./Node";
 export class MeshScript{
   constructor(descriptor = {}){
     this.nodes=new IterableObject();
@@ -61,7 +60,7 @@ export class MeshScript{
     MeshScript.nodeConstructors[n.name] = n;
   }
 }
-MeshScript.nodeConstructors=new IterableObject({Node:Node});
+MeshScript.nodeConstructors=new IterableObject();
 function isSet(i){
   return typeof i !== "undefined";
 }
