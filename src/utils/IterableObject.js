@@ -11,4 +11,7 @@ export default class IterableObject{
       }
     }
   }
+  get length(){
+    return Object.keys(this).length;
+  }
 }
