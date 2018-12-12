@@ -10,7 +10,7 @@ class Action extends Node{//abstract
   async code(p,o){
     const cancelToken = {canceled: false};
     this.cancelTokens.push(cancelToken);
-    await new Promise((res,rej)=>this.timer=setTimeout(res,500));
+    await new Promise((res,rej)=>this.timer=setTimeout(res,window.robot.speed));
     if(!cancelToken.canceled){
       window.robot[this.action]();
     }

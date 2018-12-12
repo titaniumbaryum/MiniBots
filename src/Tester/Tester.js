@@ -4,6 +4,7 @@ import Screen from './Screen/Screen';
 import WinPopup from './WinPopup/WinPopup';
 import MenuBar from '../MenuBar/MenuBar';
 import MenuBarItem from '../MenuBar/MenuBarItem';
+import MenuBarRange from '../MenuBar/MenuBarRange';
 
 class Tester extends Component {
   constructor(props){
@@ -25,6 +26,7 @@ class Tester extends Component {
           <MenuBarItem onClick={this.pause} icon ="pause" text="Pause"/>
           <MenuBarItem onClick={this.play} icon ="play_arrow" text="Play"/>
           <MenuBarItem onClick={this.reset} icon ="settings_backup_restore" text="Reset"/>
+          <MenuBarRange min="0" minText="slow" max="400" maxText="fast" step="100" value={500-this.props.robot.speed} onChange={v=>{this.props.robot.speed=500-v;this.forceUpdate();}}/>
         </MenuBar>
       </div>
       <div className="tester-grid">

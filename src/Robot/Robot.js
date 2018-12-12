@@ -4,6 +4,7 @@ export default class Robot{
   constructor(field,start){
     this.field = field;
     this.start = new Point(start);
+    this.speed = 500;
     this.reset();
   }
   reset(){
