@@ -136,6 +136,15 @@ export default class Tool extends EventTarget{
       return false;
     });
     c.addEventListener("dragover",e=>e.preventDefault());
+    c.addEventListener("mouseleave",e=>{
+      const p = toCanvasCoordinates(e,c);
+      const te = new ToolEvent("leave",p);
+      this.__prevEvent = te;
+      this.__prevMouseEvent = e;
+      this.dispatchEvent(te);
+      e.preventDefault();
+      return false;
+    });
     c.addEventListener("drop",e=>{
       e.preventDefault();
       const p = toCanvasCoordinates(e,c);
@@ -144,4 +153,5 @@ export default class Tool extends EventTarget{
     });
   }
   on(type,fun){this.addEventListener(type,fun);}
+  trigger(type,e){this.dispatchEvent(new ToolEvent(type,e.point,e.delta,e.holding))}
 }
