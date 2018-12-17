@@ -29,15 +29,7 @@ class Editor extends Component {
   }
   deleteNode(){
     this.setState((state,props)=>{
-      for(const [id,node] of this.state.mesh.nodes){
-        if(node == state.selectedNode)delete this.state.mesh.nodes[id];
-      }
-      for(const [id,link] of this.state.mesh.links){
-        if(link.start == state.selectedNode || link.end == state.selectedNode){
-          delete this.state.mesh.links[id];
-          link.disconnect();
-        }
-      }
+      this.state.mesh.removeNode(state.selectedNode);
       return {selectedNode:null};
     });
   }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ColorCycler from '../../ColorCycler';
 import { Point } from '../../utils/Math2d';
+import { promisify } from '../../utils/Promises';
+import { readFile } from '../../utils/Files';
 import Tool from '../../utils/Tool';
 import { Link } from "../../MeshScript/Core/Link";
 import './Screen.css';
-let paper = window.paper;
 
 class Screen extends Component {
   constructor(props){
@@ -26,83 +27,91 @@ class Screen extends Component {
   componentDidMount(){
     const colorCycler = new ColorCycler();
     const tool = new Tool(this.c);
-    tool.on("resize",e=>this.forceUpdate());
+    tool.on("resize",e=>this.forceUpdate());//responsive refresh
     tool.on("menu",e=>{
-      const col = this.__findCollisions(e.point,false,true,true);
+      const col = this.__findCollisions(e.point,{genOutputs:false,genNodes:true,genLinks:true});
       if(col.nodes.length) this.props.onSelect(col.nodes[0]);
       else if(col.links.length){
-        col.links[0].disconnect();
-        for(const [id,link] of this.state.mesh.links){
-          if(link == col.links[0])delete this.state.mesh.links[id];
-        }
-        this.forceUpdate();
+        this.state.mesh.removeLink(col.links[0]);
+        this.refresh();
       }
       else this.props.onSelect(null);
     });
     tool.on("down",e=>{
-      tool.holding={type:"none",node:null,output:null};
-      const col = this.__findCollisions(e.point,true,true,false);
-      if(col.outputs.length){
+      tool.holding={type:"none",node:null,output:null,link:null,downEvent:e}; //reset what the cursor is holding
+      const col = this.__findCollisions(e.point,{genOutputs:true,genNodes:true,genLinks:true});//find what the cursor's above
+      if(col.outputs.length){//if above output
         tool.holding.type = "output";
-        tool.holding.node = col.outputs[0][0];
-        tool.holding.output = col.outputs[0][1];
-      }else if(col.nodes.length){
+        tool.holding.node = col.outputs[0].node;
+        tool.holding.output = col.outputs[0].output;
+      }else if(col.nodes.length){//if above node
         tool.holding.type = "node";
         tool.holding.node = col.nodes[0];
+      }else if(col.links.length){//if above link
+        tool.holding.type = "link";
+        tool.holding.link = col.links[0];
       }
     });
     tool.on("drag",e=>{
       if(!tool.holding)return;
       if(tool.holding.type == "node"){
-        tool.holding.node.setPosition(...tool.holding.node.getPosition().plus(e.delta));
-        this.forceUpdate();
+        tool.holding.node.setPosition(...tool.holding.node.getPosition().plus(e.delta));//node.position += e.delta
+        this.refresh();
       }else if(tool.holding.type == "output"){
-
+        //draw a visual aid for the user
+      }else if(tool.holding.type == "link"){
+        //move
+      }else if(tool.holding.type == "none"){
+        tool.trigger("move",e);
       }
     });
     tool.on("up",e=>{
       if(!tool.holding)return;
-      if(tool.holding.type == "output"){
-        const col = this.__findCollisions(e.point,false,true,false);
-        if(col.nodes.length && col.nodes[0].canConnect && tool.holding.node!=col.nodes[0]){
-          const link = new Link(tool.holding.node,tool.holding.output,col.nodes[0],{
+      if(e.point.minus(tool.holding.downEvent.point).length<.1){//click
+        tool.trigger("menu",e);
+      }else if(tool.holding.type == "output"){
+        const col = this.__findCollisions(e.point,{genOutputs:false,genNodes:true,genLinks:false});
+        if(col.nodes.length && col.nodes[0].canConnect && tool.holding.node!=col.nodes[0]){//if (is above node) and (node can recieve link) and (isn't the start node)
+          const id = this.state.mesh.addLink({//creation & instantiation of the link
+            start:tool.holding.node,
+            output:tool.holding.output,
+            end:col.nodes[0],
             editor:{
               color:colorCycler.get()
             }
           });
-          link.pause();
-          this.state.mesh.links[""+Math.round(Math.random()*1000000)] = link;
-          this.forceUpdate();
+          this.state.mesh.links[id].pause();
+          this.refresh();
         }
       }
+      tool.holding = null;
+    });
+    tool.on("leave",e=>{//delete elements when dragged out
+      if(!tool.holding)return;
+      if(tool.holding.type == "node"){
+        this.state.mesh.removeNode(tool.holding.node);
+        this.refresh();
+      }else if(tool.holding.type == "link"){
+        this.state.mesh.removeLink(tool.holding.link);
+        this.refresh();
+      }
+      tool.holding = null;
     });
     tool.on("move",e=>{
-      this.setState((state,props) => {
-        return {offset:state.offset.plus(e.delta)}
-      });
+      this.offset = this.offset.plus(e.delta);
     });
     tool.on("zoom",e=>{
-      this.setState((state,props) => {
-        return {zoom:state.zoom+e.delta}
-      });
+      this.zoom += e.delta;
     });
-    tool.on("dropin",e=>{
+    tool.on("dropin",async e=>{
       for(const item of e.holding){
         if(item.type === "node"){
-          item.getAsString(s=>{
-            const o = JSON.parse(s);
-            const id = Math.round(Math.random()*1000);
-            this.props.mesh.nodes[id] = new this.state.mesh.constructor.nodeConstructors[o.type](o);
-            this.props.mesh.nodes[id].options.editor.point = [...e.point];
-            this.forceUpdate();
-          });
+          const descriptor = await promisify(item.getAsString.bind(item));
+          const id = this.props.mesh.addNode(descriptor);
+          this.props.mesh.nodes[id].options.editor.point = e.point.clone();
+          this.forceUpdate();
         }else if(item.kind === "file" && item.type === "application/json"){
-          const reader = new FileReader();
-          reader.addEventListener("loadend",e=>{
-            this.state.mesh.set(JSON.parse(reader.result));
-            this.forceUpdate();
-          });
-          reader.readAsText(item.getAsFile());
+          this.importFile(item.getAsFile());
         }
       }
     });
@@ -124,7 +133,7 @@ class Screen extends Component {
       v.render(ctx);
     }
   }
-  __findCollisions(point,genOutputs=true,genNodes=true,genLinks=true){
+  __findCollisions(point,{genOutputs=true,genNodes=true,genLinks=true}){
     const outputs = [];
     const nodes = [];
     const links = [];
@@ -132,7 +141,7 @@ class Screen extends Component {
       for(const [id,node] of this.state.mesh.nodes){
         if(genNodes && point.minus(node.getPosition()).length<50) nodes.push(node);
         for(const [output,links] of node.outputs){
-          if(genOutputs && point.minus(node.getOutputPosition(output)).length<15) outputs.push([node,output]);
+          if(genOutputs && point.minus(node.getOutputPosition(output)).length<15) outputs.push({node,output});
         }
       }
     }
@@ -144,6 +153,29 @@ class Screen extends Component {
       }
     }
     return {outputs,nodes,links};
+  }
+  importJSON(json){
+    if(typeof json === "string") json = JSON.parse(json);
+    this.state.mesh.set(json);
+    this.refresh();
+  }
+  async importFile(file){
+    this.importJSON(await readFile(file));
+  }
+  get zoom(){return this.state.zoom}
+  set zoom(amount){
+    this.setState((state,props) => {
+      return {zoom:amount}
+    });
+  }
+  get offset(){return this.state.offset}
+  set offset(amount){
+    this.setState((state,props) => {
+      return {offset:amount}
+    });
+  }
+  refresh(){
+    this.forceUpdate();
   }
 }
 
