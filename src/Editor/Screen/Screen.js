@@ -14,6 +14,7 @@ class Screen extends Component {
       mesh: props.mesh,
       offset: new Point(),
       zoom: 0,
+      tempLink: null,
     };
 
   }
@@ -59,6 +60,13 @@ class Screen extends Component {
         this.refresh();
       }else if(tool.holding.type == "output"){
         //draw a visual aid for the user
+        this.setState((state,props)=>({
+          tempLink:{
+            start: tool.holding.node.getOutputPosition(tool.holding.output),
+            end:e.point,
+            color: colorCycler.last
+          }
+        }));
       }else if(tool.holding.type == "link"){
         //move
       }else if(tool.holding.type == "none"){
@@ -81,8 +89,8 @@ class Screen extends Component {
             }
           });
           this.state.mesh.links[id].pause();
-          this.refresh();
         }
+        this.setState((s,p)=>({tempLink:null}));
       }
       tool.holding = null;
     });
@@ -91,6 +99,8 @@ class Screen extends Component {
       if(tool.holding.type == "node"){
         this.state.mesh.removeNode(tool.holding.node);
         this.refresh();
+      }else if(tool.holding.type == "output"){
+        this.setState((s,p)=>({tempLink:null}));
       }else if(tool.holding.type == "link"){
         this.state.mesh.removeLink(tool.holding.link);
         this.refresh();
@@ -131,6 +141,11 @@ class Screen extends Component {
     }
     for(const [k,v] of this.state.mesh.links){
       v.render(ctx);
+    }
+    //render the visual aid when dragging links
+    if(this.state.tempLink){
+      const {start,end,color} = this.state.tempLink;
+      Link.render(ctx,start,end,color);
     }
   }
   __findCollisions(point,{genOutputs=true,genNodes=true,genLinks=true}){
