@@ -17,7 +17,7 @@ import {SyncerNode} from "./MeshScript/Modules/SyncerNode";
 import {Forward,Left,Right} from "./Robot/Nodes/Motion";
 import {Charge,Discharge} from "./Robot/Nodes/Action";
 import {SensorNode} from "./Robot/Nodes/SensorNode";
-import levels from "./levels";
+import levels from "./Levels/index";
 
 class App extends Component {
   constructor(props){
