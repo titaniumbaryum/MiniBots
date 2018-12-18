@@ -8,7 +8,6 @@ class AddBar extends Component {
     super(props);
     this.__toastDescription = this.__toastDescription.bind(this);
     this.__renderNode = this.__renderNode.bind(this);
-    this.__addNode = this.__addNode.bind(this);
     this.__dragNode = this.__dragNode.bind(this);
     this.__cc = new ColorCycler();
   }
