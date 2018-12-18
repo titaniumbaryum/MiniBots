@@ -33,18 +33,17 @@ class App extends Component {
       screen:"titlescreen"
     }
     //binds
-    this.setField = this.setField.bind(this);
     this.setScreen = this.setScreen.bind(this);
     this.play = this.play.bind(this);
     this.closeTester = this.closeTester.bind(this);
     this.closeEditor = this.closeEditor.bind(this);
-    this.selectGame = this.selectGame.bind(this);
+    this.selectLevel = this.selectLevel.bind(this);
   }
   render() {
     const screens = {
       "editor" : ()=><Editor mesh={this.state.mesh} onPlay={this.play} onClose={this.closeEditor}/>,
       "tester" : ()=><Tester mesh={this.state.mesh} field={this.state.field} robot={this.state.robot} onClose={this.closeTester}/>,
-      "titlescreen" : ()=><TitleScreen levels={levels} onSelect={this.selectGame}/>,
+      "titlescreen" : ()=><TitleScreen levels={levels} onSelect={this.selectLevel}/>,
     }
     const n =[];
     if(this.state.screen in screens)n.push(screens[this.state.screen]());
@@ -68,6 +67,9 @@ class App extends Component {
     window.robot = new Robot(new Field(tiles),start);
     this.setState((state,props)=>({robot:window.robot,field:window.robot.field}));
   }
+  setMesh({mesh}){
+    this.state.mesh.set(mesh);
+  }
   setScreen(screen){
     this.setState((state,props)=>({screen}));
   }
@@ -84,8 +86,9 @@ class App extends Component {
   closeEditor(){
     this.setScreen("titlescreen");
   }
-  selectGame(s){
+  selectLevel(s){
     this.setField(s);
+    this.setMesh(s);
     this.setScreen("editor");
   }
 }
