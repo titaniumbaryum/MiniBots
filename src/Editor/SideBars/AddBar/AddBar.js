@@ -51,7 +51,7 @@ class AddBar extends Component {
     const dom = [];
     if(this.props.mesh){
       for(let [name,node] of this.props.mesh.constructor.nodeConstructors){
-        dom.push(<canvas ref={name}  onClick={e=>this.__addNode(e.target,node)} onContextMenu={e=>{this.__toastDescription(node);e.preventDefault();}} onDragStart={e=>this.__dragNode(e,e.target,node)} draggable="true" width="160" height="160" className="addbar-canvas"/>);
+        dom.push(<canvas ref={name} onClick={e=>{this.__toastDescription(node);e.preventDefault();}} onDragStart={e=>this.__dragNode(e,e.target,node)} draggable="true" width="160" height="160" className="addbar-canvas"/>);
       }
     }
     return <div className="addbar-box">{dom}</div>;
