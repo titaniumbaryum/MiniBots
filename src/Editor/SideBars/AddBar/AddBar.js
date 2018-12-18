@@ -32,15 +32,10 @@ class AddBar extends Component {
     node.render(ctx,c.color);
     ctx.restore();
   }
-  __addNode(c,node){
-    const id = Math.round(Math.random()*1000);
-    this.props.mesh.nodes[id] = this.__createNode(c,node);
-  }
   __createNode(c,node){
     const n = new node({editor:{point:[0,0],color:c.color,name:node.name}})
     c.color = this.__cc.get();
     c.style.color = c.color;
-    this.props.onUpdate();
     this.__renderNode(c,node);
     return n;
   }

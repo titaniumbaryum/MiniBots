@@ -52,7 +52,7 @@ class Editor extends Component {
         <div className="sidebar editor-element">
           {this.state.selectedNode?
             (<ParamBar node={this.state.selectedNode} onUpdate={this.refresh} onDelete={this.deleteNode}/>):
-            (<AddBar mesh={this.state.mesh} onUpdate={this.refresh}/>)
+            (<AddBar mesh={this.state.mesh}/>)
           }
         </div>
       </div>
