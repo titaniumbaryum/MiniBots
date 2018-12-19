@@ -30,6 +30,9 @@ export class Point{
     p.angle = a;
     return p;
   }
+  toJSON(){
+    return JSON.stringify([...this]);
+  }
   get x(){
     return this[0];
   }
