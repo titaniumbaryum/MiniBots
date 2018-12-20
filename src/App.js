@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Toast.css';
 import './App.css';
 import Editor from './Editor/Editor';
+import Helper from './Helper/Helper';
 import Tester from './Tester/Tester';
 import TitleScreen from './TitleScreen/TitleScreen';
 import Field from './Robot/Field';
@@ -30,7 +31,8 @@ class App extends Component {
       mesh:new MeshScript(),
       field:nullBot.field,
       robot:nullBot,
-      screen:"titlescreen"
+      screen:"titlescreen",
+      help:null
     }
     //binds
     this.setScreen = this.setScreen.bind(this);
@@ -48,6 +50,7 @@ class App extends Component {
     const n =[];
     if(this.state.screen in screens)n.push(screens[this.state.screen]());
     else n.push(<h1 style={{textAlign:"center"}}>An error occured</h1>);
+    n.push(<Helper>{this.state.help}</Helper>);
     n.push(<ToastContainer
       position="bottom-center"
       autoClose={2000}
@@ -62,6 +65,9 @@ class App extends Component {
     return <div className="app-container">{n}</div>;
   }
   componentDidMount(){
+  }
+  setHelp({text}){
+    this.setState((state,props)=>({help:text}));
   }
   setField({tiles,start}){
     window.robot = new Robot(new Field(tiles),start);
@@ -85,8 +91,10 @@ class App extends Component {
   }
   closeEditor(){
     this.setScreen("titlescreen");
+    this.setHelp({text:null});
   }
   selectLevel(s){
+    this.setHelp(s);
     this.setField(s);
     this.setMesh(s);
     this.setScreen("editor");

@@ -1,10 +1,10 @@
-{
+import React from 'react';
+import Text from "./Text";
+export default {
   "tiles":[
-    ["wall-S","wall-E","source","","","","","","",""],
-    ["exit","wall-SEW","","sink","","","","","",""],
-    ["","","","","","","","","",""]
+    ["","","","","","","","","","","","","","","","","","exit"]
   ],
-  "start":[0,2],
+  "start":[0,0],
   "mesh":{
     "nodes":{
       "start":{
@@ -13,18 +13,18 @@
             0,
             -200
           ],
-          "color":"#22a6b3",
+          "color":"#ffffff",
           "name":"Start"
         },
         "type":"PulseNode"
       },
-      "left1":{
+      "left":{
         "editor":{
           "point":[
             0,
             0
           ],
-          "color":"#22a6b3",
+          "color":"#ffffff",
           "name":"Left"
         },
         "steps":1,
@@ -32,17 +32,18 @@
       }
     },
     "links":{
-      "start-left1":{
+      "start-left":{
         "start":"start",
         "output":" ",
-        "end":"left1",
+        "end":"left",
         "editor":{
-          "color":"#22a6b3"
+          "color":"#ffffff"
         }
       }
     }
   },
-  "title":"test1",
-  "description":"descriptive description.",
-  "icon":"view_module"
-}
+  "title":"5. The Corridor.",
+  "description":"It's Long, very Long.",
+  "text":<Text/>,
+  "icon":"autorenew"
+};
