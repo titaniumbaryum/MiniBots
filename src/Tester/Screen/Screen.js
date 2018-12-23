@@ -15,7 +15,30 @@ class Screen extends Component {
     );
   }
   componentDidMount(){
+    this.drawField();
     this.componentDidUpdate();
+  }
+  drawField(){
+    const c = document.createElement("CANVAS");
+    c.width = this.props.field.width*100;
+    c.height = this.props.field.height*100;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "rgb(80,80,80)";//grid
+    for(let i=0;i<this.props.field.width+1;i++){
+      ctx.fillRect(i*100-.5,0,1,this.props.field.height*100);
+    }
+    for(let i=0;i<this.props.field.height+1;i++){
+      ctx.fillRect(0,i*100-.5,this.props.field.width*100,1);
+    }
+
+    for(const {x,y,type} of this.props.field){//draw field
+      ctx.save();
+      ctx.translate(x*100,y*100);
+      Field.renderTile(type,ctx);
+      ctx.restore();
+    }
+    this.fieldImage = new Image();
+    this.fieldImage.src = c.toDataURL();
   }
   componentDidUpdate(){
     this.ctx = this.c.getContext("2d");
@@ -41,20 +64,8 @@ class Screen extends Component {
 
     this.ctx.translate(-this.props.field.width*100/2,-this.props.field.height*100/2);//centering part 2
 
-    this.ctx.fillStyle = "rgb(80,80,80)";//grid
-    for(let i=0;i<this.props.field.width+1;i++){
-      this.ctx.fillRect(i*100-.5,0,1,this.props.field.height*100);
-    }
-    for(let i=0;i<this.props.field.height+1;i++){
-      this.ctx.fillRect(0,i*100-.5,this.props.field.width*100,1);
-    }
+    this.ctx.drawImage(this.fieldImage,0,0);
 
-    for(const {x,y,type} of this.props.field){//draw field
-      this.ctx.save();
-      this.ctx.translate(x*100,y*100);
-      Field.renderTile(type,this.ctx);
-      this.ctx.restore();
-    }
     this.props.robot.render(this.ctx);//draw robot
   }
 }
