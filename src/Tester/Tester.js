@@ -12,11 +12,6 @@ class Tester extends Component {
     this.pause = this.pause.bind(this);
     this.play = this.play.bind(this);
     this.reset = this.reset.bind(this);
-    const update = ()=>{
-      this.forceUpdate();
-      requestAnimationFrame(update);
-    };
-    requestAnimationFrame(update);
   }
   render(){
     return (<div className="tester-box">
