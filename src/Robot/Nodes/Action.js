@@ -5,21 +5,16 @@ class Action extends Node{//abstract
     this.editor.parameters = [];
     this.editor.description="Generic Action";
     this.outputs[" "]=[];
-    this.cancelTokens=[];
   }
   async code(p,o){
-    const cancelToken = {canceled: false};
-    this.cancelTokens.push(cancelToken);
-    await new Promise((res,rej)=>this.timer=setTimeout(res,window.robot.speed));
-    if(!cancelToken.canceled){
-      window.robot[this.action]();
+    try{
+      await window.robot[this.action]();
+    }catch(e){
+      console.log(e);
     }
-    this.cancelTokens.splice(this.cancelTokens.indexOf(cancelToken), 1);
     o(" ",p);
   }
-  reset(){
-    for(const t of this.cancelTokens)t.canceled=true;
-  }
+  reset(){}
 }
 export class Charge extends Action{
   constructor(options){

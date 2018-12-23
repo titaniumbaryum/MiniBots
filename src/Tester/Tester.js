@@ -21,7 +21,10 @@ class Tester extends Component {
           <MenuBarItem onClick={this.pause} icon ="pause" text="Pause"/>
           <MenuBarItem onClick={this.play} icon ="play_arrow" text="Play"/>
           <MenuBarItem onClick={this.reset} icon ="settings_backup_restore" text="Reset"/>
-          <MenuBarRange min="0" minText="slow" max="400" maxText="fast" step="100" value={500-this.props.robot.speed} onChange={v=>{this.props.robot.speed=500-v;this.forceUpdate();}}/>
+          <MenuBarRange min="1" minText="slow" max="7" maxText="fast" step="0.1"
+            value={this.props.robot.speed>5?5+(this.props.robot.speed-5)/16:this.props.robot.speed}
+            onChange={v=>{this.props.robot.speed=parseFloat(v>5?5+(v-5)*16:v);this.forceUpdate();}}
+          />
         </MenuBar>
       </div>
       <div className="tester-grid">
@@ -34,6 +37,7 @@ class Tester extends Component {
   componentDidMount(){
     this.active = true;
     const upd = ()=>{
+      this.props.robot.update();
       this.forceUpdate();
       if(this.active)requestAnimationFrame(upd);
     };

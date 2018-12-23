@@ -4,7 +4,45 @@ export default class Robot{
   constructor(field,start){
     this.field = field;
     this.start = new Point(start);
-    this.speed = 500;
+    this.speed = 1.5;
+    this.__actions = {
+      "conditions":{
+        "none":()=>true,
+        "left":()=>true,
+        "right":()=>true,
+        "forward":()=>!this.inFrontOf().includes("wall") && !this.inFrontOf().includes("source") && !this.inFrontOf().includes("sink"),
+        "charge":()=>this.inFrontOf()=="source" && !this.charged,
+        "discharge":()=>this.inFrontOf()=="sink" && this.charged,
+      },
+      "successes":{
+        "left":()=>{
+          this.rotation += 1;
+          this.rotation %= 4;
+        },
+        "right":()=>{
+          this.rotation += 3;
+          this.rotation %= 4;
+        },
+        "forward":()=>{
+          this.position = this.__getFuture();
+        },
+        "charge":()=>{
+          this.charged = true;
+          this.field.set(...this.__getFuture(),"source-discharged");
+          this.__success('↑ Charged successfully!');
+        },
+        "discharge":()=>{
+          this.charged = false;
+          this.field.set(...this.__getFuture(),"sink-charged");
+          this.__success('↓ Discharged successfully!');
+        },
+      },
+      "errors":{
+        "forward":()=>this.__error('Forward imposible'),
+        "charge":()=>this.__error('Can\'t charge here'),
+        "discharge":()=>this.__error('Can\'t discharge here'),
+      }
+    };
     this.reset();
   }
   reset(){
@@ -13,54 +51,46 @@ export default class Robot{
     this.charged = false;
     this.history = [];
     this.errors = [];
+    if(this.stack) for(const a of this.stack) a.reject(new Error("reset"));
+    this.stack = [];
     for(const {x,y,type} of this.field){
       if(type.includes("source"))this.field.set(x,y,"source");
       if(type.includes("sink"))this.field.set(x,y,"sink");
     }
   }
   forward(){
-    if(this.won)return;
-    this.history.push("forward");
-    const future = this.__getFuture();
-    const inFront = this.inFrontOf();
-    if(!inFront.includes("wall") && !inFront.includes("source") && !inFront.includes("sink")){
-      this.position = future;
-    }else{
-      this.__error('Forward imposible');
-    }
+    if(this.won)return new Promise((res,rej)=>{});
+    return this.pushAction("forward");
   }
   left(){
-    if(this.won)return;
-    this.rotation += 1;
-    this.rotation %= 4;
-    this.history.push("left");
+    if(this.won)return new Promise((res,rej)=>{});
+    return this.pushAction("left");
   }
   right(){
-    if(this.won)return;
-    this.rotation += 3;
-    this.rotation %= 4;
-    this.history.push("Right");
+    if(this.won)return new Promise((res,rej)=>{});
+    return this.pushAction("right");
   }
   charge(){
-    if(this.won)return;
-    this.history.push("charge");
-    if(this.inFrontOf()=="source" && !this.charged){
-      this.charged = true;
-      this.field.set(...this.__getFuture(),"source-discharged");
-      this.__success('↑ Charged successfully!');
-    }else{
-      this.__error('Can\'t charge here');
-    }
+    if(this.won)return new Promise((res,rej)=>{});
+    return this.pushAction("charge");
   }
   discharge(){
+    if(this.won)return new Promise((res,rej)=>{});
+    return this.pushAction("discharge");
+  }
+  update(){
     if(this.won)return;
-    this.history.push("discharge");
-    if(this.inFrontOf()=="sink" && this.charged){
-      this.charged = false;
-      this.field.set(...this.__getFuture(),"sink-charged");
-      this.__success('↓ Discharged successfully!');
-    }else{
-      this.__error('Can\'t discharge here');
+    if(this.currentAction.type === "none") return;
+    this.currentAction.steps += this.speed;
+    if(this.currentAction.steps>=100){
+      this.__actions.successes[this.currentAction.type]();
+      this.currentAction.resolve();
+      this.history.push(this.stack.shift().type);
+      while(!this.__actions.conditions[this.currentAction.type]()){
+        this.__actions.errors[this.currentAction.type]();
+        this.currentAction.reject(new Error("condition"));
+        this.history.push(this.stack.shift().type);
+      }
     }
   }
   render(ctx){
@@ -68,18 +98,35 @@ export default class Robot{
     ctx.filter ="blur(1px)";
     ctx.strokeStyle = "#7ed6df";
     ctx.translate(...this.position.multiply(100));
+    if(this.currentAction.type=="forward"){
+      const vector = this.__getFuture().minus(this.position).multiply(this.currentAction.steps);
+      ctx.translate(...vector);
+    }
     ctx.translate(50,50);
     ctx.rotate(-Math.PI/2*this.rotation)
+    if(this.currentAction.type=="left"){
+      ctx.rotate(-this.currentAction.steps/100*Math.PI/2);
+    }
+    if(this.currentAction.type=="right"){
+      ctx.rotate(this.currentAction.steps/100*Math.PI/2);
+    }
     ctx.translate(-50,-50);
     ctx.strokeRect(23,5,54,50);
     ctx.strokeRect(30,40,10,15);
     ctx.strokeRect(60,40,10,15);
     ctx.strokeRect(5,20,15,55);
     ctx.strokeRect(80,20,15,55);
-    if(this.charged){
+    let cs = 1;
+    if(this.currentAction.type=="charge"){
+      cs = this.currentAction.steps/100;
+    }
+    if(this.currentAction.type=="discharge"){
+      cs = 1-this.currentAction.steps/100;
+    }
+    if(this.charged||this.currentAction.type=="charge"||this.currentAction.type=="discharge"){
       ctx.strokeStyle = "#ffbe76";
       ctx.beginPath();
-      ctx.arc(50,75,15,0,Math.PI*2);
+      ctx.arc(50,75,15*cs,0,Math.PI*2);
       ctx.stroke();
     }
     ctx.restore();
@@ -114,6 +161,18 @@ export default class Robot{
       draggable: false,
       closeButton: false
     });
+  }
+  pushAction(type){
+    return new Promise((resolve,reject)=>{
+      this.stack.push({type,resolve,reject,steps:0});
+    });
+  }
+  get currentAction(){
+    if(this.stack.length){
+      return this.stack[0];
+    }else{
+      return {type:"none"}
+    }
   }
   get won(){
     for(const {x,y,type} of this.field){
