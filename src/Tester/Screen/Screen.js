@@ -5,7 +5,7 @@ import Field from '../../Robot/Field';
 class Screen extends Component {
   constructor(props){
     super(props);
-    this.active = false;
+    this.prevHash = 0;
   }
   render(){
     return (
@@ -15,8 +15,13 @@ class Screen extends Component {
     );
   }
   componentDidMount(){
-    this.drawField();
     this.componentDidUpdate();
+  }
+  hash(){
+    function hashCode(s){
+      return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    }
+    return hashCode(this.props.field.tiles.join(","));
   }
   drawField(){
     const c = document.createElement("CANVAS");
@@ -64,6 +69,11 @@ class Screen extends Component {
 
     this.ctx.translate(-this.props.field.width*100/2,-this.props.field.height*100/2);//centering part 2
 
+    const h = this.hash();
+    if(this.prevHash != h){
+      this.prevHash = h;
+      this.drawField();
+    }
     this.ctx.drawImage(this.fieldImage,0,0);
 
     this.props.robot.render(this.ctx);//draw robot
