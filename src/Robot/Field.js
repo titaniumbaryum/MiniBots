@@ -63,7 +63,7 @@ export default class Field{
       ctx.strokeStyle = "#7ed6df";
       ctx.strokeRect(3,3,94,94);
     }else if(type.includes("wall")){
-      const fuzes = 32;
+      const fuzes = 16;
       ctx.strokeStyle = "#ff7979";
       if(type.includes("N")){
         fuzline(new Point(3,3),new Point(94,3),fuzes);
