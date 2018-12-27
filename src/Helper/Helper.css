@@ -35,6 +35,27 @@
   text-align: center;
   width: fit-content;
   max-width: calc(100% - 20px);
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
+}
+/* width */
+.helper-popup::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.helper-popup::-webkit-scrollbar-track {
+  background: rgb(177, 158, 158);
+}
+
+/* Handle */
+.helper-popup::-webkit-scrollbar-thumb {
+  background: rgb(70,70,70);
+}
+
+/* Handle on hover */
+.helper-popup::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 .helper-popup-close{
   position: absolute;
