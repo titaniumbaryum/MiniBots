@@ -11,8 +11,10 @@ export default props=>(
     <h3>1.Menu-bar</h3>
     <img src={menubar}/><br/>a menu bar containing everything you need to save,reload and test your script
     <h3>2.Node-bar</h3>
-    <img src={addbar}/><br/>where you can get nodes to add to your script.
+    <img src={addbar}/><br/>where you can get <b>Nodes</b> to add to your script.
     <h3>3.Mesh</h3>
-    <img src={mesh}/><br/>The script, made of Nodes connected by Links
+    <img src={mesh}/><br/>The script, made of <b>Nodes</b> connected by <b>Links</b>
+    <h2>What to do?</h2>
+    just click <b><i className="material-icons">play_arrow</i>Run Script</b> and watch the little <b>Bot</b> complete the level.
   </div>
 );
