@@ -79,7 +79,7 @@ class Screen extends Component {
         tool.trigger("menu",e);
       }else if(tool.holding.type == "output"){
         const col = this.__findCollisions(e.point,{genOutputs:false,genNodes:true,genLinks:false});
-        if(col.nodes.length && col.nodes[0].canConnect && tool.holding.node!=col.nodes[0]){//if (is above node) and (node can recieve link) and (isn't the start node)
+        if(col.nodes.length && col.nodes[0].canConnect){//if (is above node) and (node can recieve link)
           const id = this.state.mesh.addLink({//creation & instantiation of the link
             start:tool.holding.node,
             output:tool.holding.output,

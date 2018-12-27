@@ -11,7 +11,11 @@ class Motion extends Node{//abstract
   }
   async code(p,o){
     try{
-      await window.robot[this.motion]();
+      const t=[];
+      for(let i=0;i<this.options.steps;i++){
+        t.push(window.robot[this.motion]());
+      }
+      await Promise.all(t);
     }catch(e){
       console.log(e);
     }

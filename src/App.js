@@ -79,11 +79,11 @@ class App extends Component {
   setScreen(screen){
     this.setState((state,props)=>({screen}));
   }
-  play(){
-    this.setScreen("tester");
+  async play(){
+    this.state.robot.reset();
     this.state.mesh.reset();
     this.state.mesh.unpause();
-    this.state.robot.reset();
+    this.setScreen("tester");
   }
   closeTester(){
     this.setScreen("editor")
