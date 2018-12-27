@@ -11,8 +11,8 @@ export default class Robot{
         "left":()=>true,
         "right":()=>true,
         "forward":()=>!this.inFrontOf().includes("wall") && !this.inFrontOf().includes("source") && !this.inFrontOf().includes("sink"),
-        "charge":()=>this.inFrontOf()=="source" && !this.charged,
-        "discharge":()=>this.inFrontOf()=="sink" && this.charged,
+        "charge":()=>(this.inFrontOf()=="source" && !this.charged),
+        "discharge":()=>(this.inFrontOf()=="sink" && this.charged),
       },
       "successes":{
         "left":()=>{
@@ -81,16 +81,17 @@ export default class Robot{
   update(){
     if(this.won)return;
     if(this.currentAction.type === "none") return;
+    if(this.currentAction.steps==0 && !this.__actions.conditions[this.currentAction.type]()){
+      this.__actions.errors[this.currentAction.type]();
+      this.currentAction.reject(new Error("condition"));
+      this.history.push(this.stack.shift().type);
+      return;
+    }
     this.currentAction.steps += this.speed;
     if(this.currentAction.steps>=100){
       this.__actions.successes[this.currentAction.type]();
       this.currentAction.resolve();
       this.history.push(this.stack.shift().type);
-      while(!this.__actions.conditions[this.currentAction.type]()){
-        this.__actions.errors[this.currentAction.type]();
-        this.currentAction.reject(new Error("condition"));
-        this.history.push(this.stack.shift().type);
-      }
     }
   }
   render(ctx){
