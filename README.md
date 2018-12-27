@@ -10,6 +10,5 @@ Made with love and react.
  - remove eval in sensor node
 
 ## Available Scripts
- - `npm start`
- - `npm test`
+ - `npm run start`
  - `npm run build`
