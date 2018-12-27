@@ -72,7 +72,7 @@ class Screen extends Component {
     const h = this.__hashField();
     if(this.prevHash != h){//if hash changed then field has changed
       this.prevHash = h;
-      this.drawField();//redraw field
+      this.__drawField();//redraw field
     }
     this.ctx.drawImage(this.fieldImage,0,0);//paste field
 
