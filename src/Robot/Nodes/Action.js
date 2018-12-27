@@ -8,11 +8,7 @@ class Action extends Node{//abstract
   }
   async code(p,o){
     try{
-      const t=[];
-      for(let i=0;i<this.options.steps;i++){
-        t.push(window.robot[this.action]());
-      }
-      await Promise.all(t);
+      await window.robot[this.action]();
     }catch(e){
       console.log(e);
     }

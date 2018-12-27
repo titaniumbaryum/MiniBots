@@ -9,7 +9,7 @@ export class MeshScript{
     this.set(descriptor);
   }
   set(descriptor={}){
-    this.destroy();
+    this.destroy();//reset everything
     const nodeDescriptors = new IterableObject(descriptor.nodes||{});
     const linkDescriptors = new IterableObject(descriptor.links||{});
     //node creation from patern
@@ -17,7 +17,7 @@ export class MeshScript{
     //link creation from patern
     for(const [id,l] of linkDescriptors)this.addLink(l,id);
   }
-  addNode(n,id = Random.string){
+  addNode(n,id = Random.string){//takes a node descriptor {type,...options} and id string
     if(typeof n == "string") n = JSON.parse(n);
     if(n.type && n.type in MeshScript.nodeConstructors){
       this.nodes[id]=new MeshScript.nodeConstructors[n.type](n);
@@ -27,7 +27,7 @@ export class MeshScript{
     }
     return id;
   }
-  addLink(l,id = Random.string){
+  addLink(l,id = Random.string){//takes a link descriptor {start,end,output} and id string
     if(typeof l == "string") l = JSON.parse(l);
     if(l.start && l.end && l.output){
       if(this.nodes[l.start]) l.start = this.nodes[l.start];
@@ -42,7 +42,7 @@ export class MeshScript{
     }
     return id;
   }
-  removeNode(node){
+  removeNode(node){//takes a Node instance
     for(const [id,n] of this.nodes){
       if(node == n)delete this.nodes[id];
     }
@@ -53,7 +53,7 @@ export class MeshScript{
       }
     }
   }
-  removeLink(link){
+  removeLink(link){//takes a Link instance
     link.disconnect();
     for(const [id,l] of this.links){
       if(link == l)delete this.links[id];

@@ -9,6 +9,7 @@ import MenuBarRange from '../MenuBar/MenuBarRange';
 class Tester extends Component {
   constructor(props){
     super(props);
+    this.active = false;//used to kill the render loop
     this.pause = this.pause.bind(this);
     this.play = this.play.bind(this);
     this.reset = this.reset.bind(this);

@@ -22,7 +22,7 @@ class TitleScreen extends Component {
         <h2>Levels</h2>
         <div className="levels">{levels}</div>
         <Separator/>
-        <p>Made with ❤ and react by <a href="//titouan.eu">Titouan Baillon</a>.</p>
+        <p>Made with ❤ and react by <a href="//titouan.eu">Titouan Baillon</a>. (<a href="https://github.com/titaniumbaryum/MiniBots">GitHub</a>)</p>
       </div>
     </div>);
   }

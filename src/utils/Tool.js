@@ -1,4 +1,5 @@
 import { Point } from './Math2d';
+//Canvas Mouse Tool
 class ToolEvent extends CustomEvent{
   constructor(type,point,delta,holding){
     super(type);
@@ -8,7 +9,7 @@ class ToolEvent extends CustomEvent{
   }
 }
 export default class Tool extends EventTarget{
-  constructor(c){
+  constructor(c){//takes HTMLCanvas
     super();
     function toCanvasCoordinates(evt,c){
       const p = new Point();

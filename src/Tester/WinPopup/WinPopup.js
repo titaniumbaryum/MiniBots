@@ -23,7 +23,7 @@ export default function WinPopup(props){
     </div>
   );
 }
-async function share(title){
+async function share(title){//open mobile native share popup
   try {
     await navigator.share({ title, url: window.location.href });
     console.log("Data was shared successfully");
