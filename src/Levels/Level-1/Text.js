@@ -1,8 +1,18 @@
 import React from 'react';
+import menubar from './menubar.png';
+import addbar from './addbar.png';
+import mesh from './mesh.png';
 export default props=>(
   <div>
     <h1>Welcome to MiniBots!</h1>
     In each Level a Bot needs your help to complete the Level.<br/>
-    To complete it you have to fuel all the<br/>
+    To do so, you have access to a powerful scripting engine.<br/>
+    <h2>The UI</h2>
+    <h3>1.Menu-bar</h3>
+    <img src={menubar}/><br/>a menu bar containing everything you need to save,reload and test your script
+    <h3>2.Node-bar</h3>
+    <img src={addbar}/><br/>where you can get nodes to add to your script.
+    <h3>3.Mesh</h3>
+    <img src={mesh}/><br/>The script, made of Nodes connected by Links
   </div>
 );
