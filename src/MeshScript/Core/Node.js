@@ -100,7 +100,7 @@ export class Node {
     for(const i of Object.keys(this.options)){
       o[i]=this.options[i];
     }
-    o.type = this.constructor.name;
+    o.type = this.constructor.__name;
     if(typeof o.code == "function") o.code = o.code.toString();
     return o;
   }

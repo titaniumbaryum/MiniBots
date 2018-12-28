@@ -32,7 +32,7 @@ class AddBar extends Component {
     ctx.restore();
   }
   __createNode(c,node){
-    const n = new node({editor:{point:[0,0],color:c.color,name:node.name}})
+    const n = new node({editor:{point:[0,0],color:c.color,name:node.__name}})
     c.color = this.__cc.get();
     c.style.color = c.color;
     this.__renderNode(c,node);
