@@ -16,6 +16,7 @@ class Action extends Node{//abstract
   }
   reset(){}
 }
+Action.__name = "Action";
 export class Charge extends Action{
   constructor(options){
     super(options);
@@ -23,6 +24,7 @@ export class Charge extends Action{
     this.editor.description="Charges the robot.";
   }
 }
+Charge.__name = "Charge";
 export class Discharge extends Action{
   constructor(options){
     super(options);
@@ -30,3 +32,4 @@ export class Discharge extends Action{
     this.editor.description="Discharges the robot.";
   }
 }
+Discharge.__name = "Discharge";

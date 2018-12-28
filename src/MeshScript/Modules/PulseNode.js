@@ -23,3 +23,4 @@ export class PulseNode extends Node{
     }
   }
 }
+PulseNode.__name = "PulseNode";

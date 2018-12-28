@@ -29,6 +29,7 @@ class Motion extends Node{//abstract
     ctx.stroke();
   }
 }
+Motion.__name = "Motion";
 export class Forward extends Motion{
   constructor(options){
     super(options);
@@ -36,6 +37,7 @@ export class Forward extends Motion{
     this.editor.description="Go forward one or more time";
   }
 }
+Forward.__name = "Forward";
 export class Left extends Motion{
   constructor(options){
     super(options);
@@ -43,6 +45,7 @@ export class Left extends Motion{
     this.editor.description="Turn left one or more time";
   }
 }
+Left.__name = "Left";
 export class Right extends Motion{
   constructor(options){
     super(options);
@@ -50,3 +53,4 @@ export class Right extends Motion{
     this.editor.description="Turn right one or more time";
   }
 }
+Right.__name = "Right";

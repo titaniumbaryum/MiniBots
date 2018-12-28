@@ -105,7 +105,8 @@ export class Node {
     return o;
   }
   static render(ctx,color){
-    const n = new this({editor:{point:[0,0],name:this.name,color}});
+    const n = new this({editor:{point:[0,0],name:this.__name,color}});
     n.render(ctx);
   }
 }
+Node.__name = "Node";

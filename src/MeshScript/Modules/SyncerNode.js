@@ -31,3 +31,4 @@ export class SyncerNode extends Node{
     this.triggedLinksId=[];
   }
 }
+SyncerNode.__name = "SyncerNode";

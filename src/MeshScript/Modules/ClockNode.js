@@ -30,3 +30,4 @@ export class ClockNode extends Node{
   }
   code(p,o){}
 }
+ClockNode.__name = "ClockNode";

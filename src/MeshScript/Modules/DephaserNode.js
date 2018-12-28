@@ -31,3 +31,4 @@ export class DephaserNode extends Node{
     this.timers=[];
   }
 }
+DephaserNode.__name = "DephaserNode";

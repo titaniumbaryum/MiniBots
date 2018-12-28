@@ -36,3 +36,4 @@ export class SensorNode extends Node{
     }
   }
 }
+SensorNode.__name = "SensorNode";

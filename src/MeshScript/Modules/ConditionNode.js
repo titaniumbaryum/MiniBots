@@ -29,3 +29,4 @@ export class ConditionNode extends Node{
     }
   }
 }
+ConditionNode.__name = "ConditionNode";

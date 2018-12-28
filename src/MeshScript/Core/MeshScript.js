@@ -93,7 +93,7 @@ export class MeshScript{
     return JSON.stringify(m);
   }
   static registerNodeConstructor(n){
-    MeshScript.nodeConstructors[n.name] = n;
+    MeshScript.nodeConstructors[n.__name] = n;
   }
 }
 MeshScript.nodeConstructors=new IterableObject();
